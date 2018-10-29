@@ -52,7 +52,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="NeilTest", group="Iterative Opmode")
-@Disabled
+//@Disabled
 public class NeilTest extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -78,8 +78,8 @@ public class NeilTest extends OpMode {
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive.setDirection(DcMotor.Direction.FORWARD);
         armDrive.setDirection(DcMotor.Direction.FORWARD);
         intake.setDirection(DcMotor.Direction.FORWARD);
 
@@ -138,6 +138,11 @@ public class NeilTest extends OpMode {
         leftPower = Range.clip(drive + turn, -1.0, 1.0);
         rightPower = Range.clip(drive - turn, -1.0, 1.0);
 
+        // Square the power to reduce sensitivity in the center.
+        leftPower = leftPower*Math.abs(leftPower);
+        rightPower = rightPower*Math.abs(rightPower);
+
+
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
         // leftPower  = -gamepad1.left_stick_y ;
@@ -158,17 +163,24 @@ public class NeilTest extends OpMode {
         // right is forward, left is backward, and they cancel each other out.
         armPower = gamepad1.right_trigger - gamepad1.left_trigger;
         armDrive.setPower(armPower);
+        telemetry.addData("Arm Power:", armPower);
     }
 
     public void mineralIntake() {
         // Setup a variable for the intake drive to save power level for telemetry
-        double intakeSpeed = 1;
+        double intakeSpeed = 2;
         // Right is forward (in), Left is backward (out).
-        if (gamepad1.right_bumper) {
+        if (gamepad1.right_bumper && gamepad1.left_bumper) {
+            intake.setPower(0);
+            telemetry.addData("Intake:", "OFF");
+        }
+        else if (gamepad1.right_bumper) {
             intake.setPower(intakeSpeed);
+            telemetry.addData("Intake:", "FORWARD");
         }
         else if (gamepad1.left_bumper) {
             intake.setPower(-intakeSpeed);
+            telemetry.addData("Intake:", "BACKWARD");
         }
     }
 
