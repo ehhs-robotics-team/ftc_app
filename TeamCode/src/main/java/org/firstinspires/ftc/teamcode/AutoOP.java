@@ -30,11 +30,13 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
 
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
@@ -52,7 +54,7 @@ import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="NeilTest", group="Iterative Opmode")
 @Disabled
-public abstract class TeleOP extends OpMode {
+public abstract class AutoOP extends LinearOpMode {
     // Declare OpMode members.
     public ElapsedTime runtime = new ElapsedTime();
     public DcMotor leftDrive = null;
@@ -64,7 +66,7 @@ public abstract class TeleOP extends OpMode {
      * Code to run ONCE when the driver hits INIT
      */
     @Override
-    public void init() {
+    public void runOpMode() {
         telemetry.addData("Status", "Initialized");
 
         // Initialize the hardware variables. Note that the strings used here as parameters
@@ -84,48 +86,26 @@ public abstract class TeleOP extends OpMode {
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
-    }
 
-    /*
-     * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
-     */
-    @Override
-    public void init_loop() {
-    }
-
-    /*
-     * Code to run ONCE when the driver hits PLAY
-     */
-    @Override
-    public void start() {
+        // Wait for the game to start (driver presses PLAY)
+        waitForStart();
         runtime.reset();
-    }
 
-    /*
-     * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
-     */
-    @Override
-    public void loop() {
-        main();
+        // run until the end of the match (driver presses STOP)
+        while (opModeIsActive()) {
+            main();
+        }
     }
-
-    /*
-     * Code to run ONCE after the driver hits STOP
-     */
-    @Override
-    public void stop() {
-    }
-
 
     public abstract void main();
     /*
      * method for children autonomous opmodes to override and insert case specific moves.*/
 
 
-
     /*
      * Reads and sets variables for the drive controls
      */
+    /*
     public void drive() {
         // Setup a variable for each drive wheel to save power level for telemetry
         double leftPower;
@@ -186,5 +166,6 @@ public abstract class TeleOP extends OpMode {
             telemetry.addData("Intake:", "BACKWARD");
         }
     }
+    */
 
 }
