@@ -34,6 +34,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.teamcode.AutoOP;
 
 /**
@@ -50,21 +54,47 @@ import org.firstinspires.ftc.teamcode.AutoOP;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="NeilTest", group="Iterative Opmode")
+@TeleOp(name="Auto2", group="Iterative Opmode")
 //@Disabled
 public class Auto2 extends AutoOP {
-    // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftDrive = null;
-    private DcMotor rightDrive = null;
-    private DcMotor armDrive = null;
-    private DcMotor intake = null;
 
     /*
-     * Code to run ONCE when the driver hits INIT
+     * Code to run REPEATEDLY when the driver hits INIT
      */
     @Override
     public void main() {
 
+    }
+
+    public void track() {
+        /** Start tracking the data sets we care about. */
+        stonesAndChips.activate();
+
+        while (opModeIsActive()) {
+
+            for (VuforiaTrackable trackable : allTrackables) {
+                /**
+                 * getUpdatedRobotLocation() will return null if no new information is available since
+                 * the last time that call was made, or if the trackable is not currently visible.
+                 * getRobotLocation() will return null if the trackable is not currently visible.
+                 */
+                telemetry.addData(trackable.getName(), ((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible() ? "Visible" : "Not Visible");    //
+
+                OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
+                if (robotLocationTransform != null) {
+                    lastLocation = robotLocationTransform;
+                }
+            }
+            /**
+             * Provide feedback as to where the robot was last located (if we know).
+             */
+            if (lastLocation != null) {
+                //  RobotLog.vv(TAG, "robot=%s", format(lastLocation));
+                telemetry.addData("Pos", format(lastLocation));
+            } else {
+                telemetry.addData("Pos", "Unknown");
+            }
+            telemetry.update();
+        }
     }
 }
