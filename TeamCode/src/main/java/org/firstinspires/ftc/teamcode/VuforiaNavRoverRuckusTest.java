@@ -92,7 +92,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  */
 
 @TeleOp(name="Vuforia Navigation Test", group ="Concept")
-@Disabled
+//@Disabled
 public class VuforiaNavRoverRuckusTest extends LinearOpMode {
 
     /*
