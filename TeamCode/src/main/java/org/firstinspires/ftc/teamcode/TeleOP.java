@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -50,14 +51,14 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="NeilTest", group="Iterative Opmode")
-//@Disabled
-public class ArcadeDrive extends OpMode {
+@Disabled
+public abstract class TeleOP extends OpMode {
     // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftDrive = null;
-    private DcMotor rightDrive = null;
-    private DcMotor armDrive = null;
-    private DcMotor intake = null;
+    public ElapsedTime runtime = new ElapsedTime();
+    public DcMotor leftDrive = null;
+    public DcMotor rightDrive = null;
+    public DcMotor armDrive = null;
+    public DcMotor intake = null;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -105,9 +106,7 @@ public class ArcadeDrive extends OpMode {
      */
     @Override
     public void loop() {
-        drive();
-        armMotion();
-        mineralIntake();
+        main();
     }
 
     /*
@@ -116,6 +115,12 @@ public class ArcadeDrive extends OpMode {
     @Override
     public void stop() {
     }
+
+
+    public abstract void main();
+    /*
+     * method for children autonomous opmodes to override and insert case specific moves.*/
+
 
 
     /*
@@ -136,15 +141,15 @@ public class ArcadeDrive extends OpMode {
         leftPower = Range.clip(drive + turn, -1.0, 1.0);
         rightPower = Range.clip(drive - turn, -1.0, 1.0);
 
-        // Square the power to reduce sensitivity in the center.
-        leftPower = leftPower*Math.abs(leftPower);
-        rightPower = rightPower*Math.abs(rightPower);
-
 
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
         // leftPower  = -gamepad1.left_stick_y ;
         // rightPower = -gamepad1.right_stick_y ;
+
+        // Square the power to reduce sensitivity in the center.
+        leftPower = leftPower*Math.abs(leftPower);
+        rightPower = rightPower*Math.abs(rightPower);
 
         // Send calculated power to wheels
         leftDrive.setPower(leftPower);

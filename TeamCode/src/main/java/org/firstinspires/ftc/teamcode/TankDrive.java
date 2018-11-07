@@ -35,6 +35,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.TeleOP;
+
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
  * An OpMode is a 'program' that runs in either the autonomous or the teleop period of an FTC match.
@@ -51,7 +53,7 @@ import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="NeilTest", group="Iterative Opmode")
 //@Disabled
-public class TankDrive extends OpMode {
+public class TankDrive extends TeleOP {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
@@ -63,88 +65,30 @@ public class TankDrive extends OpMode {
      * Code to run ONCE when the driver hits INIT
      */
     @Override
-    public void init() {
-        telemetry.addData("Status", "Initialized");
-
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
-        leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
-        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-        armDrive = hardwareMap.get(DcMotor.class, "bench_max");
-        intake = hardwareMap.get(DcMotor.class, "intake");
-
-        // Most robots need the motor on one side to be reversed to drive forward
-        // Reverse the motor that runs backwards when connected directly to the battery
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
-        armDrive.setDirection(DcMotor.Direction.FORWARD);
-        intake.setDirection(DcMotor.Direction.FORWARD);
-
-        // Tell the driver that initialization is complete.
-        telemetry.addData("Status", "Initialized");
-    }
-
-    /*
-     * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
-     */
-    @Override
-    public void init_loop() {
-    }
-
-    /*
-     * Code to run ONCE when the driver hits PLAY
-     */
-    @Override
-    public void start() {
-        runtime.reset();
-    }
-
-    /*
-     * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
-     */
-    @Override
-    public void loop() {
+    public void main() {
         drive();
         armMotion();
         mineralIntake();
-    }
-
-    /*
-     * Code to run ONCE after the driver hits STOP
-     */
-    @Override
-    public void stop() {
     }
 
 
     /*
      * Reads and sets variables for the drive controls
      */
+    @Override
     public void drive() {
         // Setup a variable for each drive wheel to save power level for telemetry
         double leftPower;
         double rightPower;
 
-        // Choose to drive using either Tank Mode, or POV Mode
-        // Comment out the method that's not used.  The default below is POV.
-
-        // POV Mode uses left stick to go forward, and right stick to turn.
-        // - This uses basic math to combine motions and is easier to drive straight.
-        double drive = -gamepad1.left_stick_y;
-        double turn = gamepad1.right_stick_x;
-        leftPower = Range.clip(drive + turn, -1.0, 1.0);
-        rightPower = Range.clip(drive - turn, -1.0, 1.0);
+        // Tank Mode uses one stick to control each wheel.
+        // - This requires no math, but it is hard to drive forward slowly and keep straight.
+        leftPower  = -gamepad1.left_stick_y ;
+        rightPower = -gamepad1.right_stick_y ;
 
         // Square the power to reduce sensitivity in the center.
         leftPower = leftPower*Math.abs(leftPower);
         rightPower = rightPower*Math.abs(rightPower);
-
-
-        // Tank Mode uses one stick to control each wheel.
-        // - This requires no math, but it is hard to drive forward slowly and keep straight.
-        // leftPower  = -gamepad1.left_stick_y ;
-        // rightPower = -gamepad1.right_stick_y ;
 
         // Send calculated power to wheels
         leftDrive.setPower(leftPower);
@@ -153,33 +97,6 @@ public class TankDrive extends OpMode {
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Drive Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
-    }
-
-    public void armMotion() {
-        // Setup a variable for the arm drive to save power level for telemetry
-        double armPower;
-        // right is forward, left is backward, and they cancel each other out.
-        armPower = gamepad1.right_trigger - gamepad1.left_trigger;
-        armDrive.setPower(armPower);
-        telemetry.addData("Arm Power:", armPower);
-    }
-
-    public void mineralIntake() {
-        // Setup a variable for the intake drive to save power level for telemetry
-        double intakeSpeed = 2;
-        // Right is forward (in), Left is backward (out).
-        if (gamepad1.right_bumper && gamepad1.left_bumper) {
-            intake.setPower(0);
-            telemetry.addData("Intake:", "OFF");
-        }
-        else if (gamepad1.right_bumper) {
-            intake.setPower(intakeSpeed);
-            telemetry.addData("Intake:", "FORWARD");
-        }
-        else if (gamepad1.left_bumper) {
-            intake.setPower(-intakeSpeed);
-            telemetry.addData("Intake:", "BACKWARD");
-        }
     }
 
 }
