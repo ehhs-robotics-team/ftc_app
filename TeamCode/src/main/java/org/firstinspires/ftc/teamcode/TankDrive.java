@@ -51,7 +51,7 @@ import org.firstinspires.ftc.teamcode.TeleOP;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="NeilTest", group="Iterative Opmode")
+@TeleOp(name="Tank Drive", group="Iterative Opmode")
 //@Disabled
 public class TankDrive extends TeleOP {
     // Declare OpMode members.

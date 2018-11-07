@@ -51,7 +51,7 @@ import org.firstinspires.ftc.teamcode.TeleOP;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="NeilTest", group="Iterative Opmode")
+@TeleOp(name="Arcade Drive", group="Iterative Opmode")
 //@Disabled
 public class ArcadeDrive extends TeleOP {
     // Declare OpMode members.
