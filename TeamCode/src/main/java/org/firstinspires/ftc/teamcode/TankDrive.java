@@ -68,7 +68,7 @@ public class TankDrive extends TeleOP {
     public void main() {
         drive();
         armMotion();
-        mineralIntake();
+        liftMotion();
     }
 
 
