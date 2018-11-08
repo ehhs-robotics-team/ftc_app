@@ -54,13 +54,6 @@ import org.firstinspires.ftc.teamcode.TeleOP;
 @TeleOp(name="Arcade Drive", group="Iterative Opmode")
 //@Disabled
 public class ArcadeDrive extends TeleOP {
-    // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftDrive = null;
-    private DcMotor rightDrive = null;
-    private DcMotor armDrive = null;
-    private DcMotor intake = null;
-
     /*
      * Code to run ONCE when the driver hits INIT
      */
