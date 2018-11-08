@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -60,6 +61,7 @@ public abstract class TeleOP extends OpMode {
     public DcMotor armDrive = null;
     public DcMotor lift_arm = null;
 
+
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -77,8 +79,8 @@ public abstract class TeleOP extends OpMode {
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightDrive.setDirection(DcMotor.Direction.REVERSE);
         armDrive.setDirection(DcMotor.Direction.FORWARD);
         lift_arm.setDirection(DcMotor.Direction.FORWARD);
 
@@ -169,7 +171,7 @@ public abstract class TeleOP extends OpMode {
         telemetry.addData("Arm Power:", armPower);
     }
 
-    public void liftMotion() {
+    public void intake() {
         // Setup a variable for the intake drive to save power level for telemetry
         double intakeSpeed = 2;
         // Right is forward (in), Left is backward (out).
@@ -185,6 +187,34 @@ public abstract class TeleOP extends OpMode {
             lift_arm.setPower(-intakeSpeed);
             telemetry.addData("Intake:", "BACKWARD");
         }
+    }
+
+    public void liftMotion() {
+        // Declare a variable for the lift speed
+        double liftSpeed =0.5;
+        //Up moves the arm up, down moves it down;
+        if (gamepad1.dpad_up) {
+            lift_arm.setPower(liftSpeed);
+        }
+        else if (gamepad1.dpad_down) {
+            lift_arm.setPower(-liftSpeed);
+        }
+        else {
+            lift_arm.setPower(0);
+        }
+
+    }
+
+    public void emergencyStop() {
+        if (gamepad1.x) {
+            leftDrive.setPower(0);
+            rightDrive.setPower(0);
+            armDrive.setPower(0);
+            lift_arm.setPower(0);
+            telemetry.addData("Emergency Stop", "Driver pressed 'x'");
+            telemetry.update();
+        }
+
     }
 
 }
