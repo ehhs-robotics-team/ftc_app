@@ -85,6 +85,8 @@ public abstract class AutoOP extends LinearOpMode {
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
+
+    static final double     LIFT_COUNTS_PER_INCH    = 1120; // Test this
     static final double     DRIVE_SPEED             = 0.6;
     static final double     TURN_SPEED              = 0.5;
 
@@ -415,4 +417,45 @@ public abstract class AutoOP extends LinearOpMode {
             rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
+
+    /**
+     * Lift/let down the lift arm
+     * @param speedD
+     * @param inches
+     * @param timeoutS
+     */
+    public void encoderLift(double speedD,
+                             double inches,
+                             double timeoutS) {
+        int liftTarget;
+
+        if (opModeIsActive()) {
+            // Determine new target position, and pass to motor controller
+            liftTarget = lift_arm.getCurrentPosition() + (int) (inches * LIFT_COUNTS_PER_INCH);
+            lift_arm.setTargetPosition(liftTarget);
+
+            // Turn On RUN_TO_POSITION, reset the timeout time and start motion.
+            lift_arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            runtime.reset();
+            lift_arm.setPower(Math.abs(speedD));
+
+            while (opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (lift_arm.isBusy())) {
+
+                // Display it for the driver.
+                telemetry.addData("Lift Target", "Running to %7d", liftTarget);
+                telemetry.addData("Lift Progress", "Running at %7d",
+                        lift_arm.getCurrentPosition());
+                telemetry.update();
+            }
+            // Stop all motion;
+            lift_arm.setPower(0);
+
+            // Turn off RUN_TO_POSITION
+            lift_arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        }
+    }
+
 }
