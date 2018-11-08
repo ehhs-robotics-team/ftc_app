@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -61,6 +62,9 @@ public abstract class TeleOP extends OpMode {
     public DcMotor armDrive = null;
     public DcMotor lift_arm = null;
 
+    public Servo liftLock = null;
+    public Servo intakeServo = null;
+
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -76,6 +80,9 @@ public abstract class TeleOP extends OpMode {
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         armDrive = hardwareMap.get(DcMotor.class, "bench_max");
         lift_arm = hardwareMap.get(DcMotor.class, "lift_arm");
+
+        liftLock = hardwareMap.get(Servo.class, "lift_lock");
+        intakeServo = hardwareMap.get(Servo.class, "intake_servo"); // Must be in continous rotation mode
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -119,10 +126,18 @@ public abstract class TeleOP extends OpMode {
     }
 
 
-    public abstract void main();
-    /*
-     * method for children autonomous opmodes to override and insert case specific moves.*/
 
+    /**
+     * method for children autonomous opmodes to override and insert case specific moves.
+     */
+    public abstract void main();
+    // e.g.
+    //        drive();
+    //        armMotion();
+    //        intake();
+    //        liftMotion();
+    //        setLiftLockContinuous();
+    //        checkEmergencyStop();
 
 
     /*
@@ -173,18 +188,20 @@ public abstract class TeleOP extends OpMode {
 
     public void intake() {
         // Setup a variable for the intake drive to save power level for telemetry
-        double intakeSpeed = 2;
+        double forwardSpeed = 1.0;
+        double backwardSpeed = 0.0;
+        double stopSpeed = 0.5;
         // Right is forward (in), Left is backward (out).
         if (gamepad1.right_bumper && gamepad1.left_bumper) {
-            lift_arm.setPower(0);
+            intakeServo.setPosition(stopSpeed);
             telemetry.addData("Intake:", "OFF");
         }
         else if (gamepad1.right_bumper) {
-            lift_arm.setPower(intakeSpeed);
+            intakeServo.setPosition(forwardSpeed);
             telemetry.addData("Intake:", "FORWARD");
         }
         else if (gamepad1.left_bumper) {
-            lift_arm.setPower(-intakeSpeed);
+            intakeServo.setPosition(backwardSpeed);
             telemetry.addData("Intake:", "BACKWARD");
         }
     }
@@ -205,12 +222,45 @@ public abstract class TeleOP extends OpMode {
 
     }
 
-    public void emergencyStop() {
+    /**
+     * Method for operating the sevo lock at the top of the lifting arm.
+     * Assumes a regular, 180 degree servo.
+     */
+    public void setLiftLockPosition() {
+        // Right should close the lock, Left to open it.
+        if (gamepad1.dpad_right) {
+            liftLock.setPosition(1.0);
+        }
+        else if (gamepad1.dpad_left) {
+            liftLock.setPosition(0);
+        }
+    }
+
+    /**
+     * Method for operating the sevo lock at the top of the lifting arm.
+     * Assumes a continuous rotation servo.
+     */
+    public void setLiftLockContinuous() {
+        // Right should close the lock, Left to open it.
+        if (gamepad1.dpad_right) {
+            liftLock.setPosition(.75);
+        }
+        else if (gamepad1.dpad_left) {
+            liftLock.setPosition(.25);
+        }
+    }
+
+    /**
+     * Method for stopping all motors in the case of emergency
+     */
+    public void checkEmergencyStop() {
         if (gamepad1.x) {
             leftDrive.setPower(0);
             rightDrive.setPower(0);
             armDrive.setPower(0);
             lift_arm.setPower(0);
+            intakeServo.setPosition(0.5);
+            //liftLock.setPosition(0.0); // only use this if the servo is acting as a continuous rotation servo
             telemetry.addData("Emergency Stop", "Driver pressed 'x'");
             telemetry.update();
         }
