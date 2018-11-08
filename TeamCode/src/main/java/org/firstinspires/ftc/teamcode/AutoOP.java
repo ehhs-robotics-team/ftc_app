@@ -77,7 +77,7 @@ public abstract class AutoOP extends LinearOpMode {
     public DcMotor leftDrive = null;
     public DcMotor rightDrive = null;
     public DcMotor armDrive = null;
-    public DcMotor intake = null;
+    public DcMotor lift_arm = null;
 
 
     static final double     COUNTS_PER_MOTOR_REV    = 1120 ;    // REV HD Hex motor with 40:! gearbox
@@ -132,14 +132,14 @@ public abstract class AutoOP extends LinearOpMode {
         leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         armDrive = hardwareMap.get(DcMotor.class, "bench_max");
-        intake = hardwareMap.get(DcMotor.class, "intake");
+        lift_arm = hardwareMap.get(DcMotor.class, "lift_arm");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
         armDrive.setDirection(DcMotor.Direction.FORWARD);
-        intake.setDirection(DcMotor.Direction.FORWARD);
+        lift_arm.setDirection(DcMotor.Direction.FORWARD);
 
         init_Vuforia();
 
