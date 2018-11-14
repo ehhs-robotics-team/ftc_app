@@ -62,6 +62,7 @@ public class TankDrive extends TeleOP {
         drive();
         armMotion();
         liftMotion();
+        servoIn();
     }
 
 
