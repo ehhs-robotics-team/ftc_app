@@ -62,6 +62,7 @@ public class ArcadeDrive extends TeleOP {
         drive();
         armMotion();
         liftMotion();
+        servoIn();
     }
 
 }
