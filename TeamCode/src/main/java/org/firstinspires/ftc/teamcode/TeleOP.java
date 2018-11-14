@@ -193,6 +193,7 @@ public abstract class TeleOP extends OpMode {
             intakeServo.setPower(0.5);
             telemetry.addData("Intake", "Stop");
         }
+        telemetry.update();
     }
 
     public void armMotion() {
@@ -248,10 +249,13 @@ public abstract class TeleOP extends OpMode {
         // Right should close the lock, Left to open it.
         if (gamepad1.dpad_right) {
             liftLock.setPosition(1.0);
+            telemetry.addData("lock", "shut");
         }
         else if (gamepad1.dpad_left) {
             liftLock.setPosition(0);
+            telemetry.addData("lock", "open");
         }
+        telemetry.update();
     }
 
     /**
