@@ -32,11 +32,14 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
@@ -63,7 +66,7 @@ public abstract class TeleOP extends OpMode {
     public DcMotor lift_arm = null;
 
     public Servo liftLock = null;
-    public Servo intakeServo = null;
+    public CRServo intakeServo = null;
 
 
     /*
@@ -80,9 +83,10 @@ public abstract class TeleOP extends OpMode {
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         armDrive = hardwareMap.get(DcMotor.class, "bench_max");
         lift_arm = hardwareMap.get(DcMotor.class, "lift_arm");
+        armDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         liftLock = hardwareMap.get(Servo.class, "lift_lock");
-        intakeServo = hardwareMap.get(Servo.class, "intake_servo"); // Must be in continous rotation mode
+        intakeServo = hardwareMap.get(CRServo.class, "intake_servo"); // Must be in continous rotation mode
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -176,6 +180,20 @@ public abstract class TeleOP extends OpMode {
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Drive Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
     }
+    public void servoIn() {
+        if (gamepad1.left_bumper) {
+            intakeServo.setPower(1);
+            telemetry.addData("Intake:" , "In");
+        }
+        else if (gamepad1.right_bumper) {
+            intakeServo.setPower(0);
+            telemetry.addData("Intake", "Out");
+        }
+        else if (gamepad1.y) {
+            intakeServo.setPower(0.5);
+            telemetry.addData("Intake", "Stop");
+        }
+    }
 
     public void armMotion() {
         // Setup a variable for the arm drive to save power level for telemetry
@@ -193,15 +211,15 @@ public abstract class TeleOP extends OpMode {
         double stopSpeed = 0.5;
         // Right is forward (in), Left is backward (out).
         if (gamepad1.right_bumper && gamepad1.left_bumper) {
-            intakeServo.setPosition(stopSpeed);
+            intakeServo.setPower(stopSpeed);
             telemetry.addData("Intake:", "OFF");
         }
         else if (gamepad1.right_bumper) {
-            intakeServo.setPosition(forwardSpeed);
+            intakeServo.setPower(forwardSpeed);
             telemetry.addData("Intake:", "FORWARD");
         }
         else if (gamepad1.left_bumper) {
-            intakeServo.setPosition(backwardSpeed);
+            intakeServo.setPower(backwardSpeed);
             telemetry.addData("Intake:", "BACKWARD");
         }
     }
@@ -259,7 +277,7 @@ public abstract class TeleOP extends OpMode {
             rightDrive.setPower(0);
             armDrive.setPower(0);
             lift_arm.setPower(0);
-            intakeServo.setPosition(0.5);
+            intakeServo.setPower(0.5);
             //liftLock.setPosition(0.0); // only use this if the servo is acting as a continuous rotation servo
             telemetry.addData("Emergency Stop", "Driver pressed 'x'");
             telemetry.update();
