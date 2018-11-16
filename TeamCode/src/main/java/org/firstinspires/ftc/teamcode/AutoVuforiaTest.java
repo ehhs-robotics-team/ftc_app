@@ -55,9 +55,9 @@ import org.firstinspires.ftc.teamcode.AutoOP;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Auto2", group="Iterative Opmode")
+@Autonomous(name="Auto Vuforia Test", group="Iterative Opmode")
 //@Disabled
-public class Auto2 extends AutoOP {
+public class AutoVuforiaTest extends AutoOP {
 
     /*
      * Code to run REPEATEDLY when the driver hits INIT
