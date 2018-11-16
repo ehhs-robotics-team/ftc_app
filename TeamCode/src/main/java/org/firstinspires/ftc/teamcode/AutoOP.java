@@ -32,20 +32,14 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
-import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.matrices.MatrixF;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
@@ -77,7 +71,10 @@ public abstract class AutoOP extends LinearOpMode {
     public DcMotor leftDrive = null;
     public DcMotor rightDrive = null;
     public DcMotor armDrive = null;
-    public DcMotor lift_arm = null;
+    public DcMotor liftArm = null;
+
+    public Servo liftLock = null;
+    public CRServo intakeServo = null;
 
 
     static final double     COUNTS_PER_MOTOR_REV    = 1120 ;    // REV HD Hex motor with 40:! gearbox
@@ -134,14 +131,17 @@ public abstract class AutoOP extends LinearOpMode {
         leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         armDrive = hardwareMap.get(DcMotor.class, "bench_max");
-        lift_arm = hardwareMap.get(DcMotor.class, "lift_arm");
+        liftArm = hardwareMap.get(DcMotor.class, "lift_arm");
+
+        liftLock = hardwareMap.get(Servo.class, "lift_lock");
+        intakeServo = hardwareMap.get(CRServo.class, "intake_servo"); // Must be in continous rotation mode
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
         armDrive.setDirection(DcMotor.Direction.FORWARD);
-        lift_arm.setDirection(DcMotor.Direction.FORWARD);
+        liftArm.setDirection(DcMotor.Direction.FORWARD);
 
         init_Vuforia();
 
@@ -431,29 +431,29 @@ public abstract class AutoOP extends LinearOpMode {
 
         if (opModeIsActive()) {
             // Determine new target position, and pass to motor controller
-            liftTarget = lift_arm.getCurrentPosition() + (int) (inches * LIFT_COUNTS_PER_INCH);
-            lift_arm.setTargetPosition(liftTarget);
+            liftTarget = liftArm.getCurrentPosition() + (int) (inches * LIFT_COUNTS_PER_INCH);
+            liftArm.setTargetPosition(liftTarget);
 
             // Turn On RUN_TO_POSITION, reset the timeout time and start motion.
-            lift_arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            liftArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             runtime.reset();
-            lift_arm.setPower(Math.abs(speedD));
+            liftArm.setPower(Math.abs(speedD));
 
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
-                    (lift_arm.isBusy())) {
+                    (liftArm.isBusy())) {
 
                 // Display it for the driver.
                 telemetry.addData("Lift Target", "Running to %7d", liftTarget);
                 telemetry.addData("Lift Progress", "Running at %7d",
-                        lift_arm.getCurrentPosition());
+                        liftArm.getCurrentPosition());
                 telemetry.update();
             }
             // Stop all motion;
-            lift_arm.setPower(0);
+            liftArm.setPower(0);
 
             // Turn off RUN_TO_POSITION
-            lift_arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            liftArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         }
     }
