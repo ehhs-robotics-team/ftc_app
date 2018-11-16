@@ -86,6 +86,7 @@ public abstract class AutoOP extends LinearOpMode {
     static final double     LIFT_COUNTS_PER_INCH    = 1120; // Test this
     static final double     DRIVE_SPEED             = 0.6;
     static final double     TURN_SPEED              = 0.5;
+    static final double     LIFT_SPEED              = 0.5;
 
 
     // Vuforia variables
