@@ -469,4 +469,26 @@ public abstract class AutoOP extends LinearOpMode {
         liftLock.setPosition(1);
     }
 
+    /**
+     * Methods to run the servo intake
+     */
+    public void intakeOut(double timeoutS) {
+        runtime.reset();
+        while (runtime.seconds() < timeoutS) {
+            intakeServo.setPower(1);
+        }
+        intakeStop();
+    }
+    public void intakeStop() {
+        intakeServo.setPower(0);
+    }
+    public void intakeIn(double timeoutS) {
+        runtime.reset();
+        while (runtime.seconds() < timeoutS) {
+            intakeServo.setPower(-1);
+        }
+        intakeStop();
+    }
+
+
 }
