@@ -39,7 +39,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 @Autonomous(name="Crater Auto", group="Iterative Opmode")
 //@Disabled
-public class CraterAuto extends AutoOP {
+public class AutoCrater extends AutoOP {
 
     /*
      * Code to run REPEATEDLY when the driver hits INIT

@@ -39,7 +39,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 @Autonomous(name="Depo Auto", group="Iterative Opmode")
 //@Disabled
-public class DepoAuto extends AutoOP {
+public class AutoDepo extends AutoOP {
 
     /*
      * Code to run REPEATEDLY when the driver hits INIT
