@@ -47,7 +47,7 @@ public class AutoDepo extends AutoOP {
     @Override
     public void main() {
         encoderLift(LIFT_SPEED, 4,5); //Lift the arm up, lowering the bot.
-        liftLock.setPosition(0);
+        openLock();
         encoderDrive(DRIVE_SPEED,36,36,10);
 
 

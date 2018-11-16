@@ -459,4 +459,14 @@ public abstract class AutoOP extends LinearOpMode {
         }
     }
 
+    /**
+     * Methods to open/close the lift lock
+     */
+    public void openLock() {
+        liftLock.setPosition(0);
+    }
+    public void closeLock() {
+        liftLock.setPosition(1);
+    }
+
 }
