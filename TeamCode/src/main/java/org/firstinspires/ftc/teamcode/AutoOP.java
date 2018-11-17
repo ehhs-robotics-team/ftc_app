@@ -490,5 +490,10 @@ public abstract class AutoOP extends LinearOpMode {
         intakeStop();
     }
 
+    /**
+     * Methods to raise and lower the lift arm
+     */
+
+
 
 }
