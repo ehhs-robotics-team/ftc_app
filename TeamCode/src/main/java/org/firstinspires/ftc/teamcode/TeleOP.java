@@ -186,11 +186,11 @@ public abstract class TeleOP extends OpMode {
             telemetry.addData("Intake:" , "In");
         }
         else if (gamepad1.right_bumper) {
-            intakeServo.setPower(0);
+            intakeServo.setPower(-1);
             telemetry.addData("Intake", "Out");
         }
         else if (gamepad1.y) {
-            intakeServo.setPower(0.5);
+            intakeServo.setPower(0);
             telemetry.addData("Intake", "Stop");
         }
         telemetry.update();
