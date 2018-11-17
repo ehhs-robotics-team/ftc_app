@@ -32,10 +32,14 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
@@ -51,15 +55,19 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="NeilTest", group="Iterative Opmode")
+@TeleOp(name="TeleOP Parent", group="Iterative Opmode")
 @Disabled
-public class NeilTest extends OpMode {
+public abstract class TeleOP extends OpMode {
     // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftDrive = null;
-    private DcMotor rightDrive = null;
-    private DcMotor armDrive = null;
-    private DcMotor intake = null;
+    public ElapsedTime runtime = new ElapsedTime();
+    public DcMotor leftDrive = null;
+    public DcMotor rightDrive = null;
+    public DcMotor armDrive = null;
+    public DcMotor lift_arm = null;
+
+    public Servo liftLock = null;
+    public CRServo intakeServo = null;
+
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -74,14 +82,18 @@ public class NeilTest extends OpMode {
         leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
         armDrive = hardwareMap.get(DcMotor.class, "bench_max");
-        intake = hardwareMap.get(DcMotor.class, "intake");
+        lift_arm = hardwareMap.get(DcMotor.class, "lift_arm");
+        armDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        liftLock = hardwareMap.get(Servo.class, "lift_lock");
+        intakeServo = hardwareMap.get(CRServo.class, "intake_servo"); // Must be in continous rotation mode
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightDrive.setDirection(DcMotor.Direction.REVERSE);
         armDrive.setDirection(DcMotor.Direction.FORWARD);
-        intake.setDirection(DcMotor.Direction.FORWARD);
+        lift_arm.setDirection(DcMotor.Direction.FORWARD);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -107,9 +119,7 @@ public class NeilTest extends OpMode {
      */
     @Override
     public void loop() {
-        drive();
-        armMotion();
-        mineralIntake();
+        main();
     }
 
     /*
@@ -118,6 +128,20 @@ public class NeilTest extends OpMode {
     @Override
     public void stop() {
     }
+
+
+
+    /**
+     * method for children autonomous opmodes to override and insert case specific moves.
+     */
+    public abstract void main();
+    // e.g.
+    //        drive();
+    //        armMotion();
+    //        intake();
+    //        liftMotion();
+    //        setLiftLockContinuous();
+    //        checkEmergencyStop();
 
 
     /*
@@ -138,15 +162,15 @@ public class NeilTest extends OpMode {
         leftPower = Range.clip(drive + turn, -1.0, 1.0);
         rightPower = Range.clip(drive - turn, -1.0, 1.0);
 
-        // Square the power to reduce sensitivity in the center.
-        leftPower = leftPower*Math.abs(leftPower);
-        rightPower = rightPower*Math.abs(rightPower);
-
 
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
         // leftPower  = -gamepad1.left_stick_y ;
         // rightPower = -gamepad1.right_stick_y ;
+
+        // Square the power to reduce sensitivity in the center.
+        leftPower = leftPower*Math.abs(leftPower);
+        rightPower = rightPower*Math.abs(rightPower);
 
         // Send calculated power to wheels
         leftDrive.setPower(leftPower);
@@ -155,6 +179,21 @@ public class NeilTest extends OpMode {
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Drive Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+    }
+    public void servoIn() {
+        if (gamepad1.left_bumper) {
+            intakeServo.setPower(1);
+            telemetry.addData("Intake:" , "In");
+        }
+        else if (gamepad1.right_bumper) {
+            intakeServo.setPower(0);
+            telemetry.addData("Intake", "Out");
+        }
+        else if (gamepad1.y) {
+            intakeServo.setPower(0.5);
+            telemetry.addData("Intake", "Stop");
+        }
+        telemetry.update();
     }
 
     public void armMotion() {
@@ -166,22 +205,88 @@ public class NeilTest extends OpMode {
         telemetry.addData("Arm Power:", armPower);
     }
 
-    public void mineralIntake() {
+    public void intake() {
         // Setup a variable for the intake drive to save power level for telemetry
-        double intakeSpeed = 2;
+        double forwardSpeed = 1.0;
+        double backwardSpeed = 0.0;
+        double stopSpeed = 0.5;
         // Right is forward (in), Left is backward (out).
         if (gamepad1.right_bumper && gamepad1.left_bumper) {
-            intake.setPower(0);
+            intakeServo.setPower(stopSpeed);
             telemetry.addData("Intake:", "OFF");
         }
         else if (gamepad1.right_bumper) {
-            intake.setPower(intakeSpeed);
+            intakeServo.setPower(forwardSpeed);
             telemetry.addData("Intake:", "FORWARD");
         }
         else if (gamepad1.left_bumper) {
-            intake.setPower(-intakeSpeed);
+            intakeServo.setPower(backwardSpeed);
             telemetry.addData("Intake:", "BACKWARD");
         }
+    }
+
+    public void liftMotion() {
+        // Declare a variable for the lift speed
+        double liftSpeed =0.5;
+        //Up moves the arm up, down moves it down;
+        if (gamepad1.dpad_up) {
+            lift_arm.setPower(liftSpeed);
+        }
+        else if (gamepad1.dpad_down) {
+            lift_arm.setPower(-liftSpeed);
+        }
+        else {
+            lift_arm.setPower(0);
+        }
+
+    }
+
+    /**
+     * Method for operating the sevo lock at the top of the lifting arm.
+     * Assumes a regular, 180 degree servo.
+     */
+    public void setLiftLockPosition() {
+        // Right should close the lock, Left to open it.
+        if (gamepad1.dpad_right) {
+            liftLock.setPosition(1.0);
+            telemetry.addData("lock", "shut");
+        }
+        else if (gamepad1.dpad_left) {
+            liftLock.setPosition(0);
+            telemetry.addData("lock", "open");
+        }
+        telemetry.update();
+    }
+
+    /**
+     * Method for operating the sevo lock at the top of the lifting arm.
+     * Assumes a continuous rotation servo.
+     */
+    public void setLiftLockContinuous() {
+        // Right should close the lock, Left to open it.
+        if (gamepad1.dpad_right) {
+            liftLock.setPosition(.75);
+        }
+        else if (gamepad1.dpad_left) {
+            liftLock.setPosition(.25);
+        }
+    }
+
+    /**
+     * Method for stopping all motors in the case of emergency
+     */
+    public void checkEmergencyStop() {
+        if (gamepad1.x) {
+            leftDrive.setPower(0);
+            rightDrive.setPower(0);
+            armDrive.setPower(0);
+            lift_arm.setPower(0);
+            intakeServo.setPower(0.5);
+            //liftLock.setPosition(0.0); // only use this if the servo is acting as a continuous rotation servo
+            telemetry.addData("Emergency Stop", "Driver pressed 'x'");
+            telemetry.update();
+        }
+
     }
 
 }
