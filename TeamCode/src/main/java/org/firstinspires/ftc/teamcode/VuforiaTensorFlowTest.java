@@ -302,7 +302,7 @@ public class VuforiaTensorFlowTest extends LinearOpMode {
     /**
      * Scan for all the targets and print output.
      */
-    private void navigationTargetsScan() {
+    public void navigationTargetsScan() {
         if (opModeIsActive()) {
 
             // check all the trackable target to see which one (if any) is visible.
@@ -343,7 +343,7 @@ public class VuforiaTensorFlowTest extends LinearOpMode {
     /**
      * Initialize the Vuforia localization engine.
      */
-    private void initVuforia() {
+    public void initVuforia() {
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
          */
@@ -359,7 +359,7 @@ public class VuforiaTensorFlowTest extends LinearOpMode {
     /**
      * Initialize the Tensor Flow Object Detection engine.
      */
-    private void initTfod() {
+    public void initTfod() {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
