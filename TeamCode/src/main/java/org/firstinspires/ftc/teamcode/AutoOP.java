@@ -90,6 +90,8 @@ public abstract class AutoOP extends LinearOpMode {
     static final double     TURN_SPEED              = 0.5;
     static final double     LIFT_SPEED              = 0.5;
 
+    public static final double TURN_RATIO = 0.135;
+
 
     // Vuforia variables
 
@@ -255,6 +257,19 @@ public abstract class AutoOP extends LinearOpMode {
             rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
+
+    /**
+     * Method to turn the robot a certain # of degrees
+     * A negative degree value turns right, a postitive degree value turns left
+     */
+    public void encoderTurn(double speedT, double degrees) {
+        //double inches = 0.14*degrees; // original calculated value doesn't quite work
+        double inches;
+        inches = TURN_RATIO *degrees;
+        double timeOut = Math.abs(degrees)/90*speedT*2 +1;  // absolute value function abs() necessary for negative degree measures
+        encoderDrive(speedT, -inches, inches, timeOut);
+    }
+
 
     /**
      * Lift/let down the lift arm
