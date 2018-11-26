@@ -64,6 +64,6 @@ public class AutoVuforiaTest extends AutoOP {
      */
     @Override
     public void main() {
-        track();
+        //track();
     }
 }

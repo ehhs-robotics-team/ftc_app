@@ -80,7 +80,7 @@ public abstract class AutoOP extends LinearOpMode {
 
 
     static final double     COUNTS_PER_MOTOR_REV    = 1120 ;    // REV HD Hex motor with 40:! gearbox
-    static final double     DRIVE_GEAR_REDUCTION    = 2.0 ;     // This is < 1.0 if geared UP
+    static final double     DRIVE_GEAR_REDUCTION    = 1.5 ;     // This is < 1.0 if geared UP
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
@@ -106,7 +106,7 @@ public abstract class AutoOP extends LinearOpMode {
 
     // Select which camera you want use.  The FRONT camera is the one on the same side as the screen.
     // Valid choices are:  BACK or FRONT
-    public static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
+    //public static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = null;
 
 
 
@@ -169,11 +169,11 @@ public abstract class AutoOP extends LinearOpMode {
 
 
         //Initiate image recognition software
-        initVuforia();
-        navagationTargetsInit();
+        //initVuforia();
+        //navagationTargetsInit();
 
         if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
-            initTfod();
+            //initTfod();
         } else {
             telemetry.addData("Sorry!", "This device is not compatible with TFOD");
         }
@@ -185,10 +185,9 @@ public abstract class AutoOP extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
-            main();
-        }
+        //Run the child autonomous run
+        main();
+
     }
 
 
@@ -460,7 +459,7 @@ public abstract class AutoOP extends LinearOpMode {
         OpenGLMatrix phoneLocationOnRobot = OpenGLMatrix
                 .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES,
-                        CAMERA_CHOICE == FRONT ? 90 : -90, 0, 0));
+                        parameters.cameraDirection == FRONT ? 90 : -90, 0, 0));
 
         /**  Let all the trackable listeners know where the phone is.  */
         for (VuforiaTrackable trackable : allTrackables) {
