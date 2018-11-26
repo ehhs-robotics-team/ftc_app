@@ -48,7 +48,22 @@ public class AutoCrater extends AutoOP {
     public void main() {
         encoderLift(LIFT_SPEED, 4,5); //Lift the arm up, lowering the bot.
         openLock();
-        encoderDrive(DRIVE_SPEED,36,36,10);
+        encoderDrive(DRIVE_SPEED,4,4,4);
+        encoderTurn(TURN_SPEED, 90);
+        int goldPosistion = tfodScan(10);
+        //Left
+        if (goldPosistion == 0) {
+            encoderDrive(DRIVE_SPEED, 16, 16, 10);
+        }
+        //Right
+        else if (goldPosistion == 2) {
+            encoderDrive(DRIVE_SPEED, -16,-16, 10);
+        }
+        else{
+            //Center or undefined
+        }
+        encoderTurn(TURN_SPEED,-90);
+        encoderDrive(DRIVE_SPEED, 24, 24, 10);
 
 
     }
