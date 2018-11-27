@@ -349,7 +349,7 @@ public abstract class AutoOP extends LinearOpMode {
      * Initialize all the variables necessary to run the navigation target recognition.
      */
 
-    public void navagationTargetsInit() {
+    public void initNavagationTargets() {
 
         // Load the data sets that for the trackable objects. These particular data
         // sets are stored in the 'assets' part of our application.
