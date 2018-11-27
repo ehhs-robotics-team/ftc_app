@@ -106,7 +106,7 @@ public abstract class AutoOP extends LinearOpMode {
 
     // Select which camera you want use.  The FRONT camera is the one on the same side as the screen.
     // Valid choices are:  BACK or FRONT
-    //public static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = null;
+    //public static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
 
 
 
@@ -116,7 +116,7 @@ public abstract class AutoOP extends LinearOpMode {
 
 
     // Variables required for vuforia to run
-    private VuforiaLocalizer.Parameters parameters = null;
+    public VuforiaLocalizer.Parameters parameters = null;
     public VuforiaTrackables targetsRoverRuckus = null;
     public List<VuforiaTrackable> allTrackables = null;
 
@@ -167,23 +167,27 @@ public abstract class AutoOP extends LinearOpMode {
         armDrive.setDirection(DcMotor.Direction.FORWARD);
         liftArm.setDirection(DcMotor.Direction.FORWARD);
 
-
+        /*
         //Initiate image recognition software
-        //initVuforia();
-        //navagationTargetsInit();
+        initVuforia();
+        navagationTargetsInit();
 
         if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
-            //initTfod();
+            initTfod();
         } else {
             telemetry.addData("Sorry!", "This device is not compatible with TFOD");
         }
+        */
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
 
+        /*
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
+        */
+
 
         //Run the child autonomous run
         main();
