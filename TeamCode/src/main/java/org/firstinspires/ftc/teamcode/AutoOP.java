@@ -170,7 +170,7 @@ public abstract class AutoOP extends LinearOpMode {
         /*
         //Initiate image recognition software
         initVuforia();
-        navagationTargetsInit();
+        initNavagationTargets();
 
         if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
             initTfod();
