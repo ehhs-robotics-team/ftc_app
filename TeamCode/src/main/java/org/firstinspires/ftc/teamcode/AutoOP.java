@@ -90,7 +90,7 @@ public abstract class AutoOP extends LinearOpMode {
     static final double     TURN_SPEED              = 0.5;
     static final double     LIFT_SPEED              = 0.5;
 
-    public static final double TURN_RATIO = 0.135;
+    public static final double TURN_RATIO = 0.12;//0.135;
 
 
     // Vuforia variables
