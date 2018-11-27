@@ -153,7 +153,7 @@ public class VuforiaTensorFlowTest extends LinearOpMode {
 
     public void main() {
         initVuforia();
-        navagationTargetsInit();
+        //navagationTargetsInit();
 
         if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
             initTfod();
@@ -167,7 +167,7 @@ public class VuforiaTensorFlowTest extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()) {
-            navigationTargetsScan();
+            //navigationTargetsScan();
             tfodScan();
         }
 

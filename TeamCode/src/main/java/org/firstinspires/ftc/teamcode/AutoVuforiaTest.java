@@ -69,6 +69,7 @@ public class AutoVuforiaTest extends AutoOP {
         runtime.reset();
 
         initVuforia();
+        initTfod();
         initNavagationTargets();
     }
 }
