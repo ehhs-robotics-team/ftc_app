@@ -46,6 +46,16 @@ public class AutoCrater extends AutoOP {
      */
     @Override
     public void main() {
+        initVuforia();
+        initTfod();
+        initNavagationTargets();
+
+
+        // Wait for the game to start (driver presses PLAY)
+        waitForStart();
+        runtime.reset();
+
+
         encoderLift(LIFT_SPEED, 4,5); //Lift the arm up, lowering the bot.
         openLock();
         encoderDrive(DRIVE_SPEED,4,4,4);
