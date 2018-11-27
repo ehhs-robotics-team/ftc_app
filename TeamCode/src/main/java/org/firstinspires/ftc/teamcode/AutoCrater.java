@@ -48,7 +48,7 @@ public class AutoCrater extends AutoOP {
     public void main() {
         initVuforia();
         initTfod();
-        initNavagationTargets();
+        //initNavagationTargets();
 
 
         // Wait for the game to start (driver presses PLAY)
@@ -56,11 +56,14 @@ public class AutoCrater extends AutoOP {
         runtime.reset();
 
 
-        encoderLift(LIFT_SPEED, 4,5); //Lift the arm up, lowering the bot.
+        //encoderLift(LIFT_SPEED, 4,5); //Lift the arm up, lowering the bot.
         openLock();
         encoderDrive(DRIVE_SPEED,4,4,4);
         encoderTurn(TURN_SPEED, 90);
         int goldPosistion = tfodScan(10);
+
+        telemetry.addData("Gold Position", goldPosistion);
+        telemetry.update();
         //Left
         if (goldPosistion == 0) {
             encoderDrive(DRIVE_SPEED, 16, 16, 10);
