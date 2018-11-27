@@ -46,6 +46,11 @@ public class AutoDriveTest extends AutoOP {
      */
     @Override
     public void main() {
+
+        // Wait for the game to start (driver presses PLAY)
+        waitForStart();
+        runtime.reset();
+
         encoderDrive(DRIVE_SPEED, 12,12,10);
 
     }

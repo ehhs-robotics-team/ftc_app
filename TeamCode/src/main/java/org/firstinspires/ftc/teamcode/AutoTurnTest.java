@@ -46,6 +46,11 @@ public class AutoTurnTest extends AutoOP {
      */
     @Override
     public void main() {
+
+        // Wait for the game to start (driver presses PLAY)
+        waitForStart();
+        runtime.reset();
+
         encoderTurn(TURN_SPEED, 90);
 
     }
