@@ -57,23 +57,20 @@ public class AutoCrater extends AutoOP {
 
 
         //encoderLift(LIFT_SPEED, 4,5); //Lift the arm up, lowering the bot.
-        openLock();
-        encoderDrive(DRIVE_SPEED,4,4,4);
+        //openLock();
+        encoderDrive(DRIVE_SPEED,9,9,4);
         encoderTurn(TURN_SPEED, 90);
-        int goldPosistion = tfodScan(10);
-
-        telemetry.addData("Gold Position", goldPosistion);
-        telemetry.update();
+        intakeOut(3);
         //Left
-        if (goldPosistion == 0) {
-            encoderDrive(DRIVE_SPEED, 16, 16, 10);
-        }
-        //Right
-        else if (goldPosistion == 2) {
-            encoderDrive(DRIVE_SPEED, -16,-16, 10);
-        }
-        else{
-            //Center or undefined
+
+        encoderDrive(DRIVE_SPEED, -16, -16, 5);
+
+        for (int x =0; x<2; x++) {
+            if (tfodScan(3)) {
+                break;
+            }
+            encoderDrive(DRIVE_SPEED, 16,16, 10);
+
         }
         encoderTurn(TURN_SPEED,-90);
         encoderDrive(DRIVE_SPEED, 24, 24, 10);

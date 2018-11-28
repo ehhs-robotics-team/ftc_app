@@ -71,7 +71,7 @@ public class AutoVuforiaTest extends AutoOP {
         initVuforia();
         initTfod();
         //initNavagationTargets();
-        int goldPosistion = tfodScan(10);
+        boolean goldPosistion = tfodScan(10);
         telemetry.addData("Gold Position", goldPosistion);
         telemetry.update();
     }

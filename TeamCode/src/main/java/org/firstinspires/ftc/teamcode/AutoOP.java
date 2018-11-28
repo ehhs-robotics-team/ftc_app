@@ -331,14 +331,14 @@ public abstract class AutoOP extends LinearOpMode {
     public void intakeOut(double timeoutS) {
         runtime.reset();
         while (runtime.seconds() < timeoutS) {
-            intakeServo.setPower(1);
+            intakeServo.setPower(-1);
         }
         intakeStop();
     }
     public void intakeIn(double timeoutS) {
         runtime.reset();
         while (runtime.seconds() < timeoutS) {
-            intakeServo.setPower(-1);
+            intakeServo.setPower(1);
         }
         intakeStop();
     }
@@ -556,9 +556,9 @@ public abstract class AutoOP extends LinearOpMode {
      * 1 = CENTER
      * 2 = RIGHT
      */
-    public int tfodScan(int timeoutS) {
+    public boolean tfodScan(int timeoutS) {
 
-        int goldPosition = -1;
+        boolean returnValue = false;
         runtime.reset();
 
         /** Activate Tensor Flow Object Detection. */
@@ -574,31 +574,18 @@ public abstract class AutoOP extends LinearOpMode {
                 List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
                 if (updatedRecognitions != null) {
                     telemetry.addData("# Object Detected", updatedRecognitions.size());
-                    if (updatedRecognitions.size() == 3) {
-                        int goldMineralX = -1;
-                        int silverMineral1X = -1;
-                        int silverMineral2X = -1;
+                    if (updatedRecognitions.size() == 1) {
                         for (Recognition recognition : updatedRecognitions) {
+                            String label = recognition.getLabel();
+                            telemetry.addData("mineral is:",label);
+                            telemetry.update();
                             if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
-                                goldMineralX = (int) recognition.getLeft();
-                            } else if (silverMineral1X == -1) {
-                                silverMineral1X = (int) recognition.getLeft();
+                                returnValue = true;
+                            } else if (recognition.getLabel().equals(LABEL_SILVER_MINERAL)) {
+                                returnValue = false;
                             } else {
-                                silverMineral2X = (int) recognition.getLeft();
+                                returnValue = false;
                             }
-                        }
-                        if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
-                            if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
-                                telemetry.addData("Gold Mineral Position", "Left");
-                                goldPosition = 0;
-                            } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
-                                telemetry.addData("Gold Mineral Position", "Right");
-                                goldPosition = 1;
-                            } else {
-                                telemetry.addData("Gold Mineral Position", "Center");
-                                goldPosition = 2;
-                            }
-                            break;
                         }
                     }
                     telemetry.update();
@@ -609,7 +596,7 @@ public abstract class AutoOP extends LinearOpMode {
         if (tfod != null) {
             tfod.shutdown();
         }
-        return goldPosition;
+        return returnValue;
     }
 
 
