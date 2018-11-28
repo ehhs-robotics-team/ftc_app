@@ -84,6 +84,7 @@ public abstract class TeleOP extends OpMode {
         armDrive = hardwareMap.get(DcMotor.class, "bench_max");
         lift_arm = hardwareMap.get(DcMotor.class, "lift_arm");
         armDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lift_arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         liftLock = hardwareMap.get(Servo.class, "lift_lock");
         intakeServo = hardwareMap.get(CRServo.class, "intake_servo"); // Must be in continous rotation mode

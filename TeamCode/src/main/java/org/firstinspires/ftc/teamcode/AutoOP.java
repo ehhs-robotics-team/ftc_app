@@ -328,17 +328,17 @@ public abstract class AutoOP extends LinearOpMode {
     /**
      * Methods to run the servo intake
      */
-    public void intakeOut(double timeoutS) {
+    public void intakeOut(double timeoutS, double speed) {
         runtime.reset();
         while (runtime.seconds() < timeoutS) {
-            intakeServo.setPower(-1);
+            intakeServo.setPower(-speed);
         }
         intakeStop();
     }
-    public void intakeIn(double timeoutS) {
+    public void intakeIn(double timeoutS, double speed) {
         runtime.reset();
         while (runtime.seconds() < timeoutS) {
-            intakeServo.setPower(1);
+            intakeServo.setPower(speed);
         }
         intakeStop();
     }
@@ -574,7 +574,7 @@ public abstract class AutoOP extends LinearOpMode {
                 List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
                 if (updatedRecognitions != null) {
                     telemetry.addData("# Object Detected", updatedRecognitions.size());
-                    if (updatedRecognitions.size() == 1) {
+                    if (updatedRecognitions.size() >= 1) {
                         for (Recognition recognition : updatedRecognitions) {
                             String label = recognition.getLabel();
                             telemetry.addData("mineral is:",label);

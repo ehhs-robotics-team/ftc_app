@@ -48,7 +48,7 @@ public class AutoDepo extends AutoOP {
     public void main() {
         //encoderLift(LIFT_SPEED, 4,5); //Lift the arm up, lowering the bot.
         openLock();
-        intakeOut(2);
+        intakeOut(2, 1);
         encoderDrive(DRIVE_SPEED,36,36,10);
 
 
