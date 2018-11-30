@@ -57,8 +57,6 @@ public class AutoDepo extends AutoOP {
         //encoderLift(LIFT_SPEED, 4,5); //Lift the arm up, lowering the bot.
         //openLock();
 
-        ejectMarker();
-
         encoderDrive(DRIVE_SPEED,16,16,6);
         encoderTurn(TURN_SPEED, 90);
         encoderDrive(DRIVE_SPEED, -28, -28, 10);
@@ -73,5 +71,7 @@ public class AutoDepo extends AutoOP {
         encoderDrive(DRIVE_SPEED, 6,6,3);
         encoderTurn(TURN_SPEED,-90);
         encoderDrive(DRIVE_SPEED, 24, 24, 10);
+
+        ejectMarker();
     }
 }

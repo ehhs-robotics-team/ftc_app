@@ -87,8 +87,8 @@ public abstract class AutoOP extends LinearOpMode {
             (WHEEL_DIAMETER_INCHES * 3.1415);
 
     static final double     LIFT_COUNTS_PER_INCH    = 1120; // Test this
-    static final double     DRIVE_SPEED             = 0.6;
-    static final double     TURN_SPEED              = 0.5;
+    static final double     DRIVE_SPEED             = 0.4;
+    static final double     TURN_SPEED              = 0.3;
     static final double     LIFT_SPEED              = 0.5;
 
     public static final double TURN_RATIO = 0.12;//0.135;
@@ -576,7 +576,8 @@ public abstract class AutoOP extends LinearOpMode {
         }
 
         while (opModeIsActive() && runtime.seconds() < timeoutS) {
-
+            telemetry.addData("TFOD", "Running scan");
+            telemetry.update();
             if (tfod != null) {
                 // getUpdatedRecognitions() will return null if no new information is available since
                 // the last time that call was made.
@@ -584,18 +585,19 @@ public abstract class AutoOP extends LinearOpMode {
                 if (updatedRecognitions != null) {
                     telemetry.addData("# Object Detected", updatedRecognitions.size());
                     if (updatedRecognitions.size() >= 1) {
-                        for (Recognition recognition : updatedRecognitions) {
-                            String label = recognition.getLabel();
-                            telemetry.addData("mineral is:",label);
-                            telemetry.update();
-                            if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
-                                returnValue = true;
-                            } else if (recognition.getLabel().equals(LABEL_SILVER_MINERAL)) {
-                                returnValue = false;
-                            } else {
-                                returnValue = false;
-                            }
+                        //for (Recognition recognition : updatedRecognitions) {
+                        Recognition recognition = updatedRecognitions.get(updatedRecognitions.size());
+                        String label = recognition.getLabel();
+                        telemetry.addData("mineral is:",label);
+                        telemetry.update();
+                        if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                            returnValue = true;
+                        } else if (recognition.getLabel().equals(LABEL_SILVER_MINERAL)) {
+                            returnValue = false;
+                        } else {
+                            returnValue = false;
                         }
+                        //}
                     }
                     telemetry.update();
                 }
