@@ -347,6 +347,15 @@ public abstract class AutoOP extends LinearOpMode {
     }
 
     /**
+     * Uses the intake motor to flip out a cylindrical team marker.
+     */
+    public void ejectMarker(){
+        intakeIn(1, 0.2);
+        //encoderDrive(DRIVE_SPEED, 6,6,2);
+        intakeOut(2, 1);
+    }
+
+    /**
      * Initialize all the variables necessary to run the navigation target recognition.
      */
 
