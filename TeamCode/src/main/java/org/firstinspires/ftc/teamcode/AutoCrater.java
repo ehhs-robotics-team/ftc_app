@@ -37,12 +37,11 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  * Rover Ruckus Competition.
  */
 
-@Autonomous(name="Crater Auto", group="Iterative Opmode")
+@Autonomous(name="Crater Auto", group="Linear Opmode")
 //@Disabled
 public class AutoCrater extends AutoOP {
-
     /*
-     * Code to run REPEATEDLY when the driver hits INIT
+     * Code to run ONCE, called from AutoOP
      */
     @Override
     public void main() {
@@ -50,20 +49,17 @@ public class AutoCrater extends AutoOP {
         initTfod();
         //initNavagationTargets();
 
-
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
-
         //encoderLift(LIFT_SPEED, 4,5); //Lift the arm up, lowering the bot.
         //openLock();
+
         encoderDrive(DRIVE_SPEED,16,16,6);
         encoderTurn(TURN_SPEED, 90);
-        intakeIn(1, 0.4);
-        //encoderDrive(DRIVE_SPEED, 6,6,2);
-        intakeOut(2, 1);
-        //Left
+
+        ejectMarker();
 
         encoderDrive(DRIVE_SPEED, -28, -28, 10);
 
@@ -77,7 +73,5 @@ public class AutoCrater extends AutoOP {
         encoderDrive(DRIVE_SPEED, 6,6,3);
         encoderTurn(TURN_SPEED,-90);
         encoderDrive(DRIVE_SPEED, 24, 24, 10);
-
-
     }
 }
