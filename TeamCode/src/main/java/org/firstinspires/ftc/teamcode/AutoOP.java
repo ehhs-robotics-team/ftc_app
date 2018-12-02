@@ -120,6 +120,7 @@ public abstract class AutoOP extends LinearOpMode {
     public VuforiaLocalizer.Parameters parameters = null;
     public VuforiaTrackables targetsRoverRuckus = null;
     public List<VuforiaTrackable> allTrackables = null;
+    List<Recognition> updatedRecognitions = null;
 
     // Tensor flow variables
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
@@ -600,6 +601,7 @@ public abstract class AutoOP extends LinearOpMode {
                             returnValue = false;
                         }
                         //}
+                    updatedRecognitions.clear();
                     }
                     telemetry.update();
                 }
