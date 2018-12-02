@@ -586,7 +586,7 @@ public abstract class AutoOP extends LinearOpMode {
                     telemetry.addData("# Object Detected", updatedRecognitions.size());
                     if (updatedRecognitions.size() >= 1) {
                         //for (Recognition recognition : updatedRecognitions) {
-                        Recognition recognition = updatedRecognitions.get(updatedRecognitions.size());
+                        Recognition recognition = updatedRecognitions.get(updatedRecognitions.size()-1);
                         String label = recognition.getLabel();
                         telemetry.addData("mineral is:",label);
                         telemetry.update();
