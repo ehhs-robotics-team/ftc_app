@@ -582,11 +582,13 @@ public abstract class AutoOP extends LinearOpMode {
                 // getUpdatedRecognitions() will return null if no new information is available since
                 // the last time that call was made.
                 List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+                //updatedRecognitions.clear();
+                //updatedRecognitions = tfod.getUpdatedRecognitions();
                 if (updatedRecognitions != null) {
                     telemetry.addData("# Object Detected", updatedRecognitions.size());
                     if (updatedRecognitions.size() >= 1) {
                         //for (Recognition recognition : updatedRecognitions) {
-                        Recognition recognition = updatedRecognitions.get(updatedRecognitions.size()-1);
+                        Recognition recognition = updatedRecognitions.get(0);//updatedRecognitions.size()-1);
                         String label = recognition.getLabel();
                         telemetry.addData("mineral is:",label);
                         telemetry.update();
