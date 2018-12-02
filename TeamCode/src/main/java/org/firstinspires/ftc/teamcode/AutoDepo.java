@@ -71,6 +71,8 @@ public class AutoDepo extends AutoOP {
         encoderDrive(DRIVE_SPEED, 6,6,3);
         encoderTurn(TURN_SPEED,-90);
         encoderDrive(DRIVE_SPEED, 24, 24, 10);
+        encoderTurn(TURN_SPEED, -45);
+        encoderDrive(DRIVE_SPEED, 12,12,3);
 
         ejectMarker();
     }
