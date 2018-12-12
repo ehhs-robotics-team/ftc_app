@@ -57,7 +57,7 @@ import org.firstinspires.ftc.teamcode.AutoOP;
 
 @Autonomous(name="Auto Vuforia Test", group="Iterative Opmode")
 //@Disabled
-public class AutoVuforiaTest extends AutoOP {
+public class AutoTfodTest extends AutoOP {
 
     /*
      * Code to run REPEATEDLY when the driver hits INIT
@@ -72,7 +72,11 @@ public class AutoVuforiaTest extends AutoOP {
         initTfod();
         //initNavagationTargets();
         boolean goldPosistion = tfodScan(10);
+
+
         telemetry.addData("Gold Position", goldPosistion);
         telemetry.update();
+
+        shutdownTfod();
     }
 }

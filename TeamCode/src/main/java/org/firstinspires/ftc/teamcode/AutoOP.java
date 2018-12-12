@@ -556,7 +556,10 @@ public abstract class AutoOP extends LinearOpMode {
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
 
-
+        /** Activate Tensor Flow Object Detection. */
+        if (tfod != null) {
+            tfod.activate();
+        }
     }
 
     /**
@@ -570,11 +573,6 @@ public abstract class AutoOP extends LinearOpMode {
 
         boolean returnValue = false;
         runtime.reset();
-
-        /** Activate Tensor Flow Object Detection. */
-        if (tfod != null) {
-            tfod.activate();
-        }
 
         while (opModeIsActive() && runtime.seconds() < timeoutS) {
             telemetry.addData("TFOD", "Running scan");
@@ -607,11 +605,17 @@ public abstract class AutoOP extends LinearOpMode {
                 }
             }
         }
+        return returnValue;
+    }
 
+
+    /**
+     * Safely quit tfod
+     */
+    public void shutdownTfod() {
         if (tfod != null) {
             tfod.shutdown();
         }
-        return returnValue;
     }
 
 
