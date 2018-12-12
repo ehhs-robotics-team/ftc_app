@@ -55,7 +55,7 @@ import org.firstinspires.ftc.teamcode.AutoOP;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Auto Vuforia Test", group="Iterative Opmode")
+@Autonomous(name="Auto DEV TFOD", group="Iterative Opmode")
 //@Disabled
 public class AutoTfodTest extends AutoOP {
 
@@ -71,10 +71,25 @@ public class AutoTfodTest extends AutoOP {
         initVuforia();
         initTfod();
         //initNavagationTargets();
-        boolean goldPosistion = tfodScan(10);
+
+        telemetry.addData("Gold Position test 1", "Starting");
+        telemetry.update();
+
+        boolean goldPosistion = tfodScan(5);
 
 
-        telemetry.addData("Gold Position", goldPosistion);
+        telemetry.addData("Gold Position test 1", goldPosistion);
+        telemetry.update();
+
+        sleep(5000);
+
+        telemetry.addData("Gold Position test 2", "Starting");
+        telemetry.update();
+
+        goldPosistion = tfodScan(5);
+
+
+        telemetry.addData("Gold Position test 2", goldPosistion);
         telemetry.update();
 
         shutdownTfod();
