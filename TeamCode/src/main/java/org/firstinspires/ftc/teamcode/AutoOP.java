@@ -574,7 +574,7 @@ public abstract class AutoOP extends LinearOpMode {
         boolean returnValue = false;
         runtime.reset();
 
-        while (opModeIsActive() && runtime.seconds() < timeoutS) {
+        while (opModeIsActive() && runtime.seconds() < timeoutS && returnValue == false) {
             telemetry.addData("TFOD", "Running scan");
             telemetry.update();
             if (tfod != null) {
