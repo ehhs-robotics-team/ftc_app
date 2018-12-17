@@ -35,6 +35,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  * This file contains an Autonomous OPmode for the EHHS Nerdz 2018-19 robot, Neil Armstrong.
  * It is for either starting position hanging from the lander facing the Depo in the 2018-19
  * Rover Ruckus Competition.
+ *
+ * This opmode samples both minerals.
  */
 
 @Autonomous(name="Depo Auto Double Mineral", group="Linear Opmode")
@@ -77,5 +79,21 @@ public class AutoDepoDouble extends AutoOP {
         encoderDrive(DRIVE_SPEED, 12,12,3);
 
         ejectMarker();
+
+        encoderDrive(DRIVE_SPEED, -12,-12,3);
+        encoderTurn(TURN_SPEED, 45);
+        encoderDrive(DRIVE_SPEED, -24, -24, 10);
+        encoderTurn(TURN_SPEED,90);
+
+        double landerAvoid = 30;
+        double returnDistance1 = landerAvoid+GoldPosition*16;
+        double returnDistance2 = landerAvoid+(2-GoldPosition)*16; // Inverse GoldPosition; 2->0 1->1 0->2
+
+        encoderDrive(DRIVE_SPEED, -returnDistance1,-returnDistance1,5);
+        encoderTurn(TURN_SPEED, 90);
+        encoderDrive(DRIVE_SPEED, returnDistance2, returnDistance2, 5);
+        encoderTurn(TURN_SPEED, 90);
+        encoderDrive(DRIVE_SPEED, 20, 20, 3);
+
     }
 }
