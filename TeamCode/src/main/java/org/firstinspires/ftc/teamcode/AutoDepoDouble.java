@@ -59,33 +59,51 @@ public class AutoDepoDouble extends AutoOP {
         //encoderLift(LIFT_SPEED, 4,5); //Lift the arm up, lowering the bot.
         //openLock();
 
-        encoderDrive(DRIVE_SPEED,16,16,6);
+        encoderDrive(DRIVE_SPEED,18,18,6);
         encoderTurn(TURN_SPEED, 90);
         encoderDrive(DRIVE_SPEED, -28, -28, 10);
 
         int GoldPosition = 0;
         for (int x=0; x<2; x++) {
-            if (tfodScan(5)) {
+            if (tfodScan(3)) {
                 break;
             }
             encoderDrive(DRIVE_SPEED, 16,16, 10);
             GoldPosition = x+1;
 
         }
+        shutdownTfod();
         encoderDrive(DRIVE_SPEED, 6,6,3);
         encoderTurn(TURN_SPEED,-90);
-        encoderDrive(DRIVE_SPEED, 24, 24, 10);
-        encoderTurn(TURN_SPEED, -45);
-        encoderDrive(DRIVE_SPEED, 12,12,3);
 
-        ejectMarker();
 
-        encoderDrive(DRIVE_SPEED, -12,-12,3);
-        encoderTurn(TURN_SPEED, 45);
-        encoderDrive(DRIVE_SPEED, -24, -24, 10);
+        if (GoldPosition == 0){
+            encoderDrive(DRIVE_SPEED, 10, 10, 10);
+            encoderTurn(TURN_SPEED, 45);
+            encoderDrive(DRIVE_SPEED, 12,12,3);
+            ejectMarker();
+            encoderDrive(DRIVE_SPEED, -12,-12,3);
+            encoderTurn(TURN_SPEED, -45);
+            encoderDrive(DRIVE_SPEED, -10, -10, 10);
+        }
+        else if (GoldPosition == 1){
+            encoderDrive(DRIVE_SPEED, 24, 24, 10);
+            ejectMarker();
+            encoderDrive(DRIVE_SPEED, -24, -24, 10);
+        }
+        else {
+            encoderDrive(DRIVE_SPEED, 24, 24, 10);
+            encoderTurn(TURN_SPEED, -45);
+            encoderDrive(DRIVE_SPEED, 12, 12, 3);
+            ejectMarker();
+            encoderDrive(DRIVE_SPEED, -12, -12, 3);
+            encoderTurn(TURN_SPEED, 45);
+            encoderDrive(DRIVE_SPEED, -24, -24, 10);
+        }
+
         encoderTurn(TURN_SPEED,90);
 
-        double landerAvoid = 30;
+        double landerAvoid = 16;
         double returnDistance1 = landerAvoid+GoldPosition*16;
         double returnDistance2 = landerAvoid+(2-GoldPosition)*16; // Inverse GoldPosition; 2->0 1->1 0->2
 
