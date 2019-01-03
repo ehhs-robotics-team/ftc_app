@@ -200,8 +200,8 @@ public abstract class TeleOP extends OpMode {
     public void armMotion() {
         // Setup a variable for the arm drive to save power level for telemetry
         double armPower;
-        // right is forward, left is backward, and they cancel each other out.
-        armPower = gamepad1.right_trigger - gamepad1.left_trigger;
+        // left is forward, right is backward, and they cancel each other out.
+        armPower =  gamepad1.left_trigger-gamepad1.right_trigger;
         armDrive.setPower(armPower);
         telemetry.addData("Arm Power:", armPower);
     }
