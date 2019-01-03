@@ -35,6 +35,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -78,6 +79,8 @@ public abstract class AutoOP extends LinearOpMode {
 
     public Servo liftLock = null;
     public CRServo intakeServo = null;
+
+    public DigitalChannel digitalTouch = null;  // Hardware Device Object
 
 
     static final double     COUNTS_PER_MOTOR_REV    = 1120 ;    // REV HD Hex motor with 40:! gearbox
@@ -168,6 +171,12 @@ public abstract class AutoOP extends LinearOpMode {
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
         armDrive.setDirection(DcMotor.Direction.FORWARD);
         liftArm.setDirection(DcMotor.Direction.FORWARD);
+
+        // get a reference to our digitalTouch object.
+        digitalTouch = hardwareMap.get(DigitalChannel.class, "arm_sensor");
+
+        // set the digital channel to input.
+        digitalTouch.setMode(DigitalChannel.Mode.INPUT);
 
         /*
         //Initiate image recognition software
