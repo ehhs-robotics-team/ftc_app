@@ -292,8 +292,48 @@ public abstract class AutoOP extends LinearOpMode {
      * @param timeoutS
      */
     public void encoderLift(double speedD,
-                             double inches,
-                             double timeoutS) {
+                            double inches,
+                            double timeoutS) {
+        int liftTarget;
+
+        if (opModeIsActive()) {
+            // Determine new target position, and pass to motor controller
+            liftTarget = liftArm.getCurrentPosition() + (int) (inches * LIFT_COUNTS_PER_INCH);
+            liftArm.setTargetPosition(liftTarget);
+
+            // Turn On RUN_TO_POSITION, reset the timeout time and start motion.
+            liftArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            runtime.reset();
+            liftArm.setPower(Math.abs(speedD));
+
+            while (opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (liftArm.isBusy())) {
+
+                // Display it for the driver.
+                telemetry.addData("Lift Target", "Running to %7d", liftTarget);
+                telemetry.addData("Lift Progress", "Running at %7d",
+                        liftArm.getCurrentPosition());
+                telemetry.update();
+            }
+            // Stop all motion;
+            liftArm.setPower(0);
+
+            // Turn off RUN_TO_POSITION
+            liftArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        }
+    }
+
+    /**
+     * Lift/let down the mineral arm
+     * @param speedD
+     * @param inches
+     * @param timeoutS
+     */
+    public void encoderRaiseMineralArm(double speedD,
+                            double inches,
+                            double timeoutS) {
         int liftTarget;
 
         if (opModeIsActive()) {
@@ -363,6 +403,21 @@ public abstract class AutoOP extends LinearOpMode {
         intakeIn(1, 0.2);
         //encoderDrive(DRIVE_SPEED, 6,6,2);
         intakeOut(2, 1);
+    }
+
+
+    /**
+     * Method to automatically raise and lower the arm.
+     */
+    public void raiseArm(){
+        while (digitalTouch.getState() == true) { // Button is not Pressed
+            encoderRaiseMineralArm(1.0, 5, 4);
+        }
+    }
+    public void lowerArm(){
+        while (digitalTouch.getState() == true) { // Button is not Pressed
+            encoderRaiseMineralArm(1.0, -5, 4);
+        }
     }
 
     /**
