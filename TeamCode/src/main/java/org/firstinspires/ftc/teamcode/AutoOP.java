@@ -88,6 +88,8 @@ public abstract class AutoOP extends LinearOpMode {
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
+    static final double     ARM_GEAR_REDUCTION      = 0.1628;
+    static final double     ARM_COUNTS_PER_DEGREE     = (COUNTS_PER_MOTOR_REV*ARM_GEAR_REDUCTION);
 
     static final double     LIFT_COUNTS_PER_INCH    = 1120; // Test this
     static final double     DRIVE_SPEED             = 0.4;
@@ -169,8 +171,10 @@ public abstract class AutoOP extends LinearOpMode {
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
-        armDrive.setDirection(DcMotor.Direction.FORWARD);
+        armDrive.setDirection(DcMotor.Direction.REVERSE);
         liftArm.setDirection(DcMotor.Direction.FORWARD);
+
+        armDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // get a reference to our digitalTouch object.
         digitalTouch = hardwareMap.get(DigitalChannel.class, "arm_sensor");
@@ -328,17 +332,17 @@ public abstract class AutoOP extends LinearOpMode {
     /**
      * Lift/let down the mineral arm
      * @param speedD
-     * @param inches
+     * @param degree
      * @param timeoutS
      */
     public void encoderRaiseMineralArm(double speedD,
-                            double inches,
+                            double degree,
                             double timeoutS) {
         int liftTarget;
 
         if (opModeIsActive()) {
             // Determine new target position, and pass to motor controller
-            liftTarget = armDrive.getCurrentPosition() + (int) (inches * LIFT_COUNTS_PER_INCH);
+            liftTarget = armDrive.getCurrentPosition() + (int) (degree * ARM_COUNTS_PER_DEGREE);
             armDrive.setTargetPosition(liftTarget);
 
             // Turn On RUN_TO_POSITION, reset the timeout time and start motion.
@@ -348,7 +352,7 @@ public abstract class AutoOP extends LinearOpMode {
 
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
-                    (armDrive.isBusy())) {
+                    (armDrive.isBusy()) && (digitalTouch.getState() == true)) {
 
                 // Display it for the driver.
                 telemetry.addData("Lift Target", "Running to %7d", liftTarget);
@@ -363,6 +367,16 @@ public abstract class AutoOP extends LinearOpMode {
             armDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         }
+    }
+
+    /**
+     * Method to automatically raise and lower the arm.
+     */
+    public void raiseArm(double degree){
+        encoderRaiseMineralArm(1.0, degree, 4);
+    }
+    public void lowerArm(double degree){
+        encoderRaiseMineralArm(1.0, -degree, 4);
     }
 
     /**
@@ -403,21 +417,6 @@ public abstract class AutoOP extends LinearOpMode {
         intakeIn(1, 0.2);
         //encoderDrive(DRIVE_SPEED, 6,6,2);
         intakeOut(2, 1);
-    }
-
-
-    /**
-     * Method to automatically raise and lower the arm.
-     */
-    public void raiseArm(){
-        while (digitalTouch.getState() == true) { // Button is not Pressed
-            encoderRaiseMineralArm(1.0, 5, 4);
-        }
-    }
-    public void lowerArm(){
-        while (digitalTouch.getState() == true) { // Button is not Pressed
-            encoderRaiseMineralArm(1.0, -5, 4);
-        }
     }
 
     /**

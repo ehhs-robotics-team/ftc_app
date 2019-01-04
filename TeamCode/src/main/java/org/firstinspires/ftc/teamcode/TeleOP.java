@@ -93,7 +93,7 @@ public abstract class TeleOP extends OpMode {
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
-        armDrive.setDirection(DcMotor.Direction.FORWARD);
+        armDrive.setDirection(DcMotor.Direction.REVERSE);
         lift_arm.setDirection(DcMotor.Direction.FORWARD);
 
         // Tell the driver that initialization is complete.
