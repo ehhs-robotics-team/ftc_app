@@ -338,29 +338,29 @@ public abstract class AutoOP extends LinearOpMode {
 
         if (opModeIsActive()) {
             // Determine new target position, and pass to motor controller
-            liftTarget = liftArm.getCurrentPosition() + (int) (inches * LIFT_COUNTS_PER_INCH);
-            liftArm.setTargetPosition(liftTarget);
+            liftTarget = armDrive.getCurrentPosition() + (int) (inches * LIFT_COUNTS_PER_INCH);
+            armDrive.setTargetPosition(liftTarget);
 
             // Turn On RUN_TO_POSITION, reset the timeout time and start motion.
-            liftArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             runtime.reset();
-            liftArm.setPower(Math.abs(speedD));
+            armDrive.setPower(Math.abs(speedD));
 
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
-                    (liftArm.isBusy())) {
+                    (armDrive.isBusy())) {
 
                 // Display it for the driver.
                 telemetry.addData("Lift Target", "Running to %7d", liftTarget);
                 telemetry.addData("Lift Progress", "Running at %7d",
-                        liftArm.getCurrentPosition());
+                        armDrive.getCurrentPosition());
                 telemetry.update();
             }
             // Stop all motion;
-            liftArm.setPower(0);
+            armDrive.setPower(0);
 
             // Turn off RUN_TO_POSITION
-            liftArm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            armDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         }
     }
