@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 /**
  * This file contains an Autonomous OPmode for the EHHS Nerdz 2018-19 robot, Neil Armstrong.
@@ -38,7 +39,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  */
 
 @Autonomous(name="Auto Test 12in drive", group="Iterative Opmode")
-//@Disabled
+@Disabled
 public class AutoDriveTest extends AutoOP {
 
     /*

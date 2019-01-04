@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -93,7 +94,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  */
 
 @Autonomous(name="Vuforia/Tensor Flow Compatibility Test", group ="Linear Opmode")
-//@Disabled
+@Disabled
 public class VuforiaTensorFlowTest extends LinearOpMode {
     /*
      * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which

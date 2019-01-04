@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import java.sql.Driver;
 
@@ -40,7 +41,7 @@ import java.sql.Driver;
  */
 
 @Autonomous(name="Auto Crater avoid samples", group="Iterative Opmode")
-//@Disabled
+@Disabled
 public class AutoCraterAvoid extends AutoOP {
 
     /*

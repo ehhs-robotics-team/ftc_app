@@ -52,7 +52,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="Neil_Test", group="Iterative Opmode")
-//@Disabled
+@Disabled
 public class TestRobot extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
