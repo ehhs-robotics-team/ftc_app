@@ -198,11 +198,23 @@ public abstract class TeleOP extends OpMode {
     }
 
     public void armMotion() {
+        double liftSpeed = 1.0;
         // Setup a variable for the arm drive to save power level for telemetry
         double armPower;
         // left is forward, right is backward, and they cancel each other out.
         armPower =  gamepad1.left_trigger-gamepad1.right_trigger;
         armDrive.setPower(armPower);
+
+        //Also loosen/tighten the lift arm to take up the slack created.
+        if (armPower > 0) {
+            lift_arm.setPower(-liftSpeed);
+        }
+        else if(armPower<0){
+            lift_arm.setPower(liftSpeed);
+        }
+        else if(armPower < 0.5 && armPower > -0.5){ // Don't change the lift position with less than half power.
+            lift_arm.setPower(0);
+        }
         telemetry.addData("Arm Power:", armPower);
     }
 

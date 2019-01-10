@@ -299,6 +299,7 @@ public abstract class AutoOP extends LinearOpMode {
                             double inches,
                             double timeoutS) {
         int liftTarget;
+        //inches = -inches; //Reverse directions.
 
         if (opModeIsActive()) {
             // Determine new target position, and pass to motor controller
@@ -373,10 +374,10 @@ public abstract class AutoOP extends LinearOpMode {
      * Method to automatically raise and lower the arm.
      */
     public void raiseArm(double degree){
-        encoderRaiseMineralArm(1.0, degree, 4);
+        encoderRaiseMineralArm(1.0, -degree, 4);
     }
     public void lowerArm(double degree){
-        encoderRaiseMineralArm(1.0, -degree, 4);
+        encoderRaiseMineralArm(1.0, degree, 4);
     }
 
     /**

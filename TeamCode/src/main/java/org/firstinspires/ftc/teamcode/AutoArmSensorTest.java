@@ -50,10 +50,11 @@ public class AutoArmSensorTest extends AutoOP {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
-        raiseArm(6);
-        encoderLift(LIFT_SPEED,0.3, 3);
+        encoderLift(LIFT_SPEED,-.2, 1);
+        raiseArm(3);
+        encoderLift(LIFT_SPEED,-0.1, 3);
         raiseArm(15);
-        encoderLift(LIFT_SPEED, 2, 3);
+        encoderLift(LIFT_SPEED, -1, 3);
         encoderDrive(DRIVE_SPEED, 4, 4, 2);
         lowerArm(120);
 
