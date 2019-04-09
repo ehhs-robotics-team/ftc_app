@@ -39,12 +39,12 @@ public class DriveTank extends LinearOpMode {
     while (opModeIsActive()) {
       // Put loop blocks here.
       if (gamepad1.y) {
-        rightLift.setPosition(0.01);
-        leftLift.setPosition(0.01);
+        rightLift.setPosition(0.6);
+        leftLift.setPosition(0.5);
       }
       if (gamepad1.a) {
-        rightLift.setPosition(0.65);
-        leftLift.setPosition(0.65);
+        rightLift.setPosition(-.9);
+        leftLift.setPosition(-1);
       }
       f_leftdrive.setPower(gamepad1.left_stick_y / 1.5);
       f_rightdrive.setPower(gamepad1.right_stick_y / 1.5);
