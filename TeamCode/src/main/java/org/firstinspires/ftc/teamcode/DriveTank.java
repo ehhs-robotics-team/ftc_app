@@ -33,7 +33,7 @@ public class DriveTank extends LinearOpMode {
     // Put initialization blocks here.
     f_rightdrive.setDirection(DcMotorSimple.Direction.REVERSE);
     b_rightdrive.setDirection(DcMotorSimple.Direction.REVERSE);
-    leftLift.setDirection(Servo.Direction.REVERSE);
+    rightLift.setDirection(Servo.Direction.REVERSE);
     waitForStart();
     // Put run blocks here.
     while (opModeIsActive()) {
