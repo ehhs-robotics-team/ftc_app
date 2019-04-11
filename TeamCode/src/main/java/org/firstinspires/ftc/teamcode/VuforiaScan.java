@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -60,6 +61,11 @@ public class VuforiaScan extends LinearOpMode {
     private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
     private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
 
+    private Servo leftLift;
+    private Servo rightLift;
+
+
+
     /*
      * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
      * 'parameters.vuforiaLicenseKey' is initialized is for illustration only, and will not function.
@@ -88,6 +94,13 @@ public class VuforiaScan extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+
+        leftLift = hardwareMap.servo.get("leftLift");
+        rightLift = hardwareMap.servo.get("rightLift");
+
+        rightLift.setDirection(Servo.Direction.REVERSE);
+
+
         // The TFObjectDetector uses the camera frames from the VuforiaLocalizer, so we create that
         // first.
         initVuforia();
@@ -104,8 +117,22 @@ public class VuforiaScan extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
+            lowerPlow();
             tfodScan(5);
         }
+    }
+
+    private void raisePlow() {
+        rightLift.setPosition(0.6);
+        leftLift.setPosition(0.5);
+    }
+    private void lowerPlow() {
+        rightLift.setPosition(-.9);
+        leftLift.setPosition(-1);
+    }
+    private void deactivatePlow() {
+        rightLift.close();
+        leftLift.close();
     }
 
     /**
@@ -171,12 +198,16 @@ public class VuforiaScan extends LinearOpMode {
                         String label = recognition.getLabel();
                         telemetry.addData("mineral is:",label);
                         telemetry.update();
+                        sleep(1000);
                         if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
                             returnValue = true;
+                            return returnValue;
                         } else if (recognition.getLabel().equals(LABEL_SILVER_MINERAL)) {
                             returnValue = false;
+                            return returnValue;
                         } else {
                             returnValue = false;
+                            return returnValue;
                         }
                         //}
                     }
