@@ -58,9 +58,9 @@ import com.qualcomm.robotcore.util.Range;
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-@Autonomous(name="NutsAndBoltsAuto", group="Linear Opmode")
+@Autonomous(name="DropOnlyAuto", group="Linear Opmode")
 
-public class FacingCraterAuto_Copy2_Copy extends LinearOpMode {
+public class DropOnlyAuto extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();

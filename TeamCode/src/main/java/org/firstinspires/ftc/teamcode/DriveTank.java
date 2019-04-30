@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "DriveTank (Blocks to Java)", group = "")
+@TeleOp(name = "DriveTank (Blocks 2 Java) Wireless", group = "")
 public class DriveTank extends LinearOpMode {
 
   private DcMotor f_rightdrive;
@@ -39,12 +39,12 @@ public class DriveTank extends LinearOpMode {
     while (opModeIsActive()) {
       // Put loop blocks here.
       if (gamepad1.y) {
-        rightLift.setPosition(0.6);
-        leftLift.setPosition(0.5);
+        rightLift.setPosition(0.81);
+        leftLift.setPosition(0.8);
       }
       if (gamepad1.a) {
-        rightLift.setPosition(-.9);
-        leftLift.setPosition(-1);
+        rightLift.setPosition(-.21);
+        leftLift.setPosition(-.2);
       }
       f_leftdrive.setPower(gamepad1.left_stick_y / 1.5);
       f_rightdrive.setPower(gamepad1.right_stick_y / 1.5);
