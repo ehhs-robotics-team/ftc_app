@@ -97,6 +97,8 @@ public class TimedAuto extends LinearOpMode {
         f_rightDrive.setDirection(DcMotor.Direction.FORWARD);
         b_rightDrive.setDirection(DcMotor.Direction.FORWARD);
         rightLift.setDirection(Servo.Direction.REVERSE);
+
+        PusherUp();
         
         boolean forward = false;
         double leftPower = 0.5;
