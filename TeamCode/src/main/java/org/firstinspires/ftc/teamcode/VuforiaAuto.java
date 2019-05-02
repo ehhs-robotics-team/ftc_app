@@ -124,12 +124,32 @@ public class VuforiaAuto extends LinearOpMode {
         waitForStart();
 
         runtime.reset();
+
+        RobotDown(3.95);
+        Stop(1);
+        Left(0.3);
+        Stop(1);
+        Forward(.3);
+        Stop();
         PusherDown();
-        tfodScan(5);
-        /*RobotDown(4.0);
-        Stop(0.5);
-        Left(0.25);
-        Forward(1);
+
+        if (tfodScan(5)) {
+            Forward(.5);
+            Right(.3);
+        }
+
+        else{
+            Right(0.3);
+            if(tfodScan(5)) {
+                Forward(.5);
+            }
+            else{
+                Right(0.3);
+                Forward(.5);
+                Left(.3);
+            }
+        }
+        /*
         Right(0.29);
         Forward(0.75);
         PusherDown();
@@ -278,8 +298,8 @@ public class VuforiaAuto extends LinearOpMode {
     }
     
     public void PusherDown(){
-        rightLift.setPosition(-.21);
-        leftLift.setPosition(-.2);
+        rightLift.setPosition(0.15);
+        leftLift.setPosition(0.14);
    }
    
     public void PusherUp(){
@@ -331,11 +351,9 @@ public class VuforiaAuto extends LinearOpMode {
     }
 
     /**
-     * Scan for the minerals and returns the position of the gold mineral.
-     * -1 = mineral not detected
-     * 0 = LEFT
-     * 1 = CENTER
-     * 2 = RIGHT
+     * Scan for one minerals and returns true if its the gold mineral.
+     * true:  Gold
+     * false: Silver
      */
     public boolean tfodScan(int timeoutS) {
 
