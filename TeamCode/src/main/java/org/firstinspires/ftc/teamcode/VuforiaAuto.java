@@ -120,59 +120,50 @@ public class VuforiaAuto extends LinearOpMode {
         Stop = true;
 
         RobotDown(3.9);
+        Left(0.25);
+        Forward(1);
+        Right(0.29);
+        Forward(0.61);
+        PusherDown();
+        Backward(0.5);
+
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             //auto starts here
-
-            
             /*
             if (runtime.seconds() > 0 && runtime.seconds() < 3.1){
                 RobotDown();
             }
-            
             if (runtime.seconds() > 3.11 && runtime.seconds() < 3.5){
                 Stop();
             }
-            
             if (runtime.seconds() > 3.5 && runtime.seconds() < 3.75){
                 Left();
             }
-            
             if (runtime.seconds() > 3.75 && runtime.seconds() < 4.75){
                 Forward();
             }
-            
             if (runtime.seconds() > 4.75 && runtime.seconds() < 5.04){
                 Right();
             }
-            
             if (runtime.seconds() > 5.04 && runtime.seconds() < 5.65) {
                 Forward();
             }
-            
-            
             //puts the pusher down
             if (runtime.seconds() > 5.65 && runtime.seconds() < 6.72){
                 Stop();
             }
-            
             if (runtime.seconds() > 6.72 && runtime.seconds() < 7){
                 PusherDown();
             }
-            
             if (runtime.seconds() > 7 && runtime.seconds() < 7.5){
                 Backward();
             }
-            
             if (runtime.seconds() > 7.5){
                 Stop();
             }
-            
-            
             */
-
-
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
         }
@@ -184,7 +175,6 @@ public class VuforiaAuto extends LinearOpMode {
         b_leftDrive.setPower(0);
         b_rightDrive.setPower(0);
         motor.setPower(0);
-        
     }
 
     public void Forward(){
@@ -194,12 +184,38 @@ public class VuforiaAuto extends LinearOpMode {
         b_rightDrive.setPower(0.5);
         
     }
-    
+
+    public void Forward(double length){
+        double start = runtime.seconds();
+        f_leftDrive.setPower(0.5);
+        f_rightDrive.setPower(0.5);
+        b_leftDrive.setPower(0.5);
+        b_rightDrive.setPower(0.5);
+
+        while (runtime.seconds() < start+length){
+            ;
+        }
+        Stop();
+    }
+
     public void Backward(){
         f_leftDrive.setPower(-0.5);
         f_rightDrive.setPower(-0.5);
         b_leftDrive.setPower(-0.5);
         b_rightDrive.setPower(-0.5);
+    }
+
+    public void Backward(double length){
+        double start = runtime.seconds();
+        f_leftDrive.setPower(-0.5);
+        f_rightDrive.setPower(-0.5);
+        b_leftDrive.setPower(-0.5);
+        b_rightDrive.setPower(-0.5);
+
+        while (runtime.seconds() < start+length){
+            ;
+        }
+        Stop();
     }
 
     public void RobotDown() {motor.setPower(-1);}
@@ -230,7 +246,6 @@ public class VuforiaAuto extends LinearOpMode {
     }
     
     public void Left(){
-        
         //left side
         f_leftDrive.setPower(-0.5);
         b_leftDrive.setPower(-0.5);
@@ -238,9 +253,23 @@ public class VuforiaAuto extends LinearOpMode {
         f_rightDrive.setPower(0);
         b_rightDrive.setPower(0);
     }
+
+    public void Left(double length) {
+        double start = runtime.seconds();
+        //left side
+        f_leftDrive.setPower(-0.5);
+        b_leftDrive.setPower(-0.5);
+        //right side
+        f_rightDrive.setPower(0);
+        b_rightDrive.setPower(0);
+
+        while (runtime.seconds() < start+length){
+            ;
+        }
+        Stop();
+    }
     
     public void Right(){
-        
         //left side
         f_leftDrive.setPower(0);
         b_leftDrive.setPower(0);
@@ -248,15 +277,30 @@ public class VuforiaAuto extends LinearOpMode {
         f_rightDrive.setPower(-0.5);
         b_rightDrive.setPower(-0.5);
     }
+
+    public void Right(double length) {
+        double start = runtime.seconds();
+        //left side
+        f_leftDrive.setPower(0);
+        b_leftDrive.setPower(0);
+        //right side
+        f_rightDrive.setPower(-0.5);
+        b_rightDrive.setPower(-0.5);
+
+        while (runtime.seconds() < start+length){
+            ;
+        }
+        Stop();
+    }
     
-   public void PusherDown(){
-       leftLift.setPosition(0.65);
-       rightLift.setPosition(0.65);
+    public void PusherDown(){
+        rightLift.setPosition(-.21);
+        leftLift.setPosition(-.2);
    }
    
-   public void PusherUp(){
-       leftLift.setPosition(0.01);
-       rightLift.setPosition(0.01);
+    public void PusherUp(){
+        rightLift.setPosition(0.81);
+        leftLift.setPosition(0.8);
    }
 
   
