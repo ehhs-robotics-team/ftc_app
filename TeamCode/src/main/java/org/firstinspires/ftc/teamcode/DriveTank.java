@@ -46,8 +46,8 @@ public class DriveTank extends LinearOpMode {
       }
       if (gamepad1.a) {
         //lower lift
-        rightLift.setPosition(-.21);
-        leftLift.setPosition(-.2);
+        rightLift.setPosition(.15);
+        leftLift.setPosition(.14);
       }
       f_leftdrive.setPower(gamepad1.left_stick_y / 1.5);
       f_rightdrive.setPower(gamepad1.right_stick_y / 1.5);
