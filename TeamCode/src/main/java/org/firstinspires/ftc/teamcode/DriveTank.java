@@ -38,11 +38,14 @@ public class DriveTank extends LinearOpMode {
     // Put run blocks here.
     while (opModeIsActive()) {
       // Put loop blocks here.
+
       if (gamepad1.y) {
+        //raise lift
         rightLift.setPosition(0.81);
         leftLift.setPosition(0.8);
       }
       if (gamepad1.a) {
+        //lower lift
         rightLift.setPosition(-.21);
         leftLift.setPosition(-.2);
       }
