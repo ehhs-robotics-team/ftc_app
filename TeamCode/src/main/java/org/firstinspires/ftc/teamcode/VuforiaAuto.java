@@ -128,7 +128,7 @@ public class VuforiaAuto extends LinearOpMode {
         waitForStart();
 
         runtime.reset();
-        final double scanDistance = 0.3;
+        final double scanDistance = 0.4;
         final double scanTurn = 0.3;
 
         //RobotDown(3.95);
