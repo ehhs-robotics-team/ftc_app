@@ -124,29 +124,32 @@ public class VuforiaAuto extends LinearOpMode {
         waitForStart();
 
         runtime.reset();
+        final double scanDistance = .4;
+        final double scanTurn = 0.3;
 
-        RobotDown(3.95);
+        //RobotDown(3.95);
+        //Stop(1);
+        Left(scanTurn);
         Stop(1);
-        Left(0.3);
-        Stop(1);
-        Forward(.3);
+        Forward(scanDistance);
         Stop();
         PusherDown();
 
         if (tfodScan(5)) {
-            Forward(.5);
-            Right(.3);
+            Forward(1);
+            Right(scanTurn);
         }
 
         else{
-            Right(0.3);
+            Backward(scanDistance);
+            Right(scanTurn);
             if(tfodScan(5)) {
-                Forward(.5);
+                Forward(1);
             }
             else{
-                Right(0.3);
-                Forward(.5);
-                Left(.3);
+                Backward(scanDistance);
+                Right(scanTurn);
+                Forward(1);
             }
         }
         /*
