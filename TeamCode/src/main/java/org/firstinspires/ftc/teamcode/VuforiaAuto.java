@@ -112,7 +112,11 @@ public class VuforiaAuto extends LinearOpMode {
         f_rightDrive.setDirection(DcMotor.Direction.FORWARD);
         b_rightDrive.setDirection(DcMotor.Direction.FORWARD);
         rightLift.setDirection(Servo.Direction.REVERSE);
-        
+
+        f_leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        f_rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        b_leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        b_rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         boolean forward = false;
         double leftPower = 0.5;
         double rightPower = 0.5;
