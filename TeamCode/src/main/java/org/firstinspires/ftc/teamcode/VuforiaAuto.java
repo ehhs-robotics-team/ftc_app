@@ -129,7 +129,7 @@ public class VuforiaAuto extends LinearOpMode {
 
         runtime.reset();
         final double scanDistance = 0.4;
-        final double scanTurn = 0.3;
+        final double scanTurn = 0.2;
 
         //RobotDown(3.95);
         //Stop(1);
@@ -272,8 +272,21 @@ public class VuforiaAuto extends LinearOpMode {
         f_leftDrive.setPower(-0.5);
         b_leftDrive.setPower(-0.5);
         //right side
-        f_rightDrive.setPower(0);
-        b_rightDrive.setPower(0);
+        f_rightDrive.setPower(0.5);
+        b_rightDrive.setPower(0.5);
+
+        while (runtime.seconds() < start+length){
+            ;
+        }
+        Stop();
+    }
+
+    public void Left(double length, boolean frontOnly) {
+        double start = runtime.seconds();
+        //left side
+        f_leftDrive.setPower(-0.5);
+        //right side
+        f_rightDrive.setPower(0.5);
 
         while (runtime.seconds() < start+length){
             ;
@@ -293,8 +306,8 @@ public class VuforiaAuto extends LinearOpMode {
     public void Right(double length) {
         double start = runtime.seconds();
         //left side
-        f_leftDrive.setPower(0);
-        b_leftDrive.setPower(0);
+        f_leftDrive.setPower(0.5);
+        b_leftDrive.setPower(0.5);
         //right side
         f_rightDrive.setPower(-0.5);
         b_rightDrive.setPower(-0.5);
