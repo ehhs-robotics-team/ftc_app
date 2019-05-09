@@ -126,37 +126,40 @@ public class VuforiaAuto extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+        while (opModeIsActive()){
+            runtime.reset();
+            final double scanDistance = 0.3;
+            final double scanTurn = 0.2;
 
-        runtime.reset();
-        final double scanDistance = 0.3;
-        final double scanTurn = 0.2;
+            //RobotDown(3.95);
+            //Stop(1);
+            Left(scanTurn + 0.05);
+            Stop(1);
+            Forward(scanDistance + 0.2);
+            Stop();
+            PusherDown();
 
-        //RobotDown(3.95);
-        //Stop(1);
-        Left(scanTurn + 0.1);
-        Stop(1);
-        Forward(scanDistance + 0.2);
-        Stop();
-        PusherDown();
-
-        if (tfodScan(5)) {
-            Forward(1.5);
-            Right(scanTurn + 0.1);
-        }
-
-        else{
-            Backward(scanDistance);
-            Right(scanTurn);
-            Forward(scanDistance);
-            if(tfodScan(5)) {
+            if (tfodScan(5)) {
                 Forward(1.5);
+                Right(scanTurn + 0.05);
             }
+
             else{
                 Backward(scanDistance);
                 Right(scanTurn);
-                Forward(1.5);
+                Forward(scanDistance);
+                if(tfodScan(5)) {
+                    Forward(1.5);
+                }
+                else{
+                    Backward(scanDistance);
+                    Right(scanTurn);
+                    Forward(1.5);
+                }
             }
         }
+
+
         /*
         Right(0.29);
         Forward(0.75);
