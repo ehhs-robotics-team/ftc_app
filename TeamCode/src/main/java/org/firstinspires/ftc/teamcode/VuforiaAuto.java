@@ -315,6 +315,12 @@ public class VuforiaAuto extends LinearOpMode {
         leftLift.setPosition(0.8);
    }
 
+   public void HoldMarker(){
+        rightLift.setPosition(0.41);
+        leftLift.setPosition(0.4);
+   }
+
+
     // Vuforia and TFOD methods
     public void initVuforiaTFOD() {
         // The TFObjectDetector uses the camera frames from the VuforiaLocalizer, so we create that
