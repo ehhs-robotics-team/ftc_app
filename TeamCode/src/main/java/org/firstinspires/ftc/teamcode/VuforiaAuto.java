@@ -113,6 +113,7 @@ public class VuforiaAuto extends LinearOpMode {
         b_rightDrive.setDirection(DcMotor.Direction.FORWARD);
         rightLift.setDirection(Servo.Direction.REVERSE);
 
+
         f_leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         f_rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         b_leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -137,33 +138,37 @@ public class VuforiaAuto extends LinearOpMode {
             Stop(1);
             Forward(scanDistance + 0.25);
             Stop();
-            HoldMarker();
+            PusherDown();
 
             if (tfodScan(5)) {
+                HoldMarker();
                 Right(0.1);
                 Forward(1);
                 Right(0.5);
                 Forward(1);
-                PusherDown();
             }
 
             else{
+                HoldMarker();
                 Backward(scanDistance);
                 Right(0.3);
                 Forward(scanDistance);
+                PusherDown();
                 if(tfodScan(5)) {
                     Forward(1.5);
-                    PusherDown();
                 }
                 else{
+                    HoldMarker();
                     Backward(scanDistance);
                     Right(scanTurn);
                     Forward(1.5);
-                    Left(scanTurn);
-                    Forward(1);
-                    PusherDown();
+                    Left(scanTurn * 2);
+                    Forward(0.6);
                 }
             }
+            PusherDown();
+            rightLift.close();
+            leftLift.close();
         }
 
 
