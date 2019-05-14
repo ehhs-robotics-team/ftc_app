@@ -55,7 +55,7 @@ import java.util.List;
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-@Autonomous(name="DepotAutoWithVuforia", group="Linear Opmode")
+@Autonomous(name="VuforiaTestONLY", group="Linear Opmode")
 
 public class VuforiaTestOnly extends LinearOpMode {
 
@@ -121,7 +121,7 @@ public class VuforiaTestOnly extends LinearOpMode {
         double leftPower = 0.5;
         double rightPower = 0.5;
 
-        PusherUp();
+        //PusherUp();
         initVuforiaTFOD();
 
         // Wait for the game to start (driver presses PLAY)
