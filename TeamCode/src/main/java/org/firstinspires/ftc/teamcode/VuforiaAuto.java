@@ -131,7 +131,7 @@ public class VuforiaAuto extends LinearOpMode {
             final double scanDistance = 0.35;
             final double scanTurn = 0.25;
 
-            RobotDown(3.95);
+            RobotDown(3.75);
             Stop(1);
             Left(0.3);
             Stop(1);
@@ -140,8 +140,10 @@ public class VuforiaAuto extends LinearOpMode {
             PusherDown();
 
             if (tfodScan(5)) {
-                Forward(1.5);
-                //Right(0.37);
+                Right(0.1);
+                Forward(1);
+                Right(0.5);
+                Forward(1);
             }
 
             else{
