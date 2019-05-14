@@ -141,7 +141,7 @@ public class VuforiaAuto extends LinearOpMode {
             PusherDown();
 
             if (tfodScan(5)) {
-                HoldMarker();
+                PusherMarkerUp();
                 Right(0.1);
                 Forward(1);
                 Right(0.5);
@@ -149,7 +149,7 @@ public class VuforiaAuto extends LinearOpMode {
             }
 
             else{
-                HoldMarker();
+                PusherMarkerUp();
                 Backward(scanDistance);
                 Right(0.3);
                 Forward(scanDistance);
@@ -158,7 +158,7 @@ public class VuforiaAuto extends LinearOpMode {
                     Forward(1.5);
                 }
                 else{
-                    HoldMarker();
+                    PusherMarkerUp();
                     Backward(scanDistance);
                     Right(scanTurn);
                     Forward(1.5);
@@ -166,9 +166,9 @@ public class VuforiaAuto extends LinearOpMode {
                     Forward(0.6);
                 }
             }
-            PusherDown();
-            rightLift.close();
-            leftLift.close();
+            PusherMarkerDown();
+            Stop(1);
+            Backward(.6);
         }
 
 
@@ -343,10 +343,15 @@ public class VuforiaAuto extends LinearOpMode {
         leftLift.setPosition(0.8);
    }
 
-   public void HoldMarker(){
-        rightLift.setPosition(0.26);
-        leftLift.setPosition(0.25);
+    public void PusherMarkerUp(){
+         rightLift.setPosition(0.26);
+         leftLift.setPosition(0.25);
    }
+
+    public void PusherMarkerDown(){
+        rightLift.setPosition(0.10);
+        leftLift.setPosition(0.09);
+    }
 
 
     // Vuforia and TFOD methods
