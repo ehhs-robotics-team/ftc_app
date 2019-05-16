@@ -155,15 +155,16 @@ public class VuforiaAuto extends LinearOpMode {
                 Forward(scanDistance);
                 PusherDown();
                 if(tfodScan(5)) {
-                    Forward(1.5);
+                    Forward(1.7);
                 }
                 else{
                     PusherMarkerUp();
                     Backward(scanDistance);
-                    Right(scanTurn);
-                    Forward(1.5);
-                    Left(scanTurn * 2);
-                    Forward(0.6);
+                    Right(scanTurn + 0.07);
+                    PusherDown();
+                    Forward(1.7);
+                    Left(0.6);
+                    Forward(0.75);
                 }
             }
             PusherMarkerDown();
@@ -204,12 +205,12 @@ public class VuforiaAuto extends LinearOpMode {
         }
     }
 
-    public void Forward(){
+    public void Forward() {
         f_leftDrive.setPower(0.5);
         f_rightDrive.setPower(0.5);
         b_leftDrive.setPower(0.5);
         b_rightDrive.setPower(0.5);
-        
+
     }
 
     public void Forward(double length){

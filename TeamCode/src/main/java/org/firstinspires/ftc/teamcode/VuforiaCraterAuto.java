@@ -156,6 +156,7 @@ public class VuforiaCraterAuto extends LinearOpMode {
                 Forward(scanDistance);
                 PusherDown();
                 if(tfodScan(5)) {
+                    PusherUp();
                     Forward(1.5);
                 }
                 else{
