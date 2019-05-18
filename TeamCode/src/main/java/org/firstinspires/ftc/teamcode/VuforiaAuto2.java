@@ -167,7 +167,7 @@ public class VuforiaAuto2 extends LinearOpMode {
                     Right(scanTurn);// + 0.07);
                     PusherDown();
                     Forward(1.7);
-                    Left(0.6);
+                    Left(0.45);
                     Forward(0.75);
                 }
             }
