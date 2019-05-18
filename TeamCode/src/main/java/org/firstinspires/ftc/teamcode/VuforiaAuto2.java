@@ -123,25 +123,29 @@ public class VuforiaAuto2 extends LinearOpMode {
         double rightPower = 0.5;
 
         PusherUp();
-        initVuforiaTFOD();
+
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         if (opModeIsActive()){
             runtime.reset();
             final double scanDistance = 0.35;
-            final double scanTurn = 0.25;
+            final double scanTurn = 0.21;
 
-            RobotDown(3.65);
+            RobotDown(3.4);
             Stop(1);
-            Left(0.3);
+            Left(0.25);
             Stop(1);
             Forward(scanDistance + 0.25);
             Stop();
             PusherDown();
 
+            initVuforiaTFOD();
+
+            activateTFOD();
+
+
             if (tfodScan(5)) {
-                PusherMarkerUp();
                 Right(0.1);
                 Forward(1);
                 Right(0.5);
@@ -151,7 +155,7 @@ public class VuforiaAuto2 extends LinearOpMode {
             else{
                 PusherMarkerUp();
                 Backward(scanDistance);
-                Right(0.3);
+                Right(0.28);
                 Forward(scanDistance);
                 PusherDown();
                 if(tfodScan(5)) {
@@ -160,7 +164,7 @@ public class VuforiaAuto2 extends LinearOpMode {
                 else{
                     PusherMarkerUp();
                     Backward(scanDistance);
-                    Right(scanTurn + 0.07);
+                    Right(scanTurn);// + 0.07);
                     PusherDown();
                     Forward(1.7);
                     Left(0.6);
@@ -170,6 +174,7 @@ public class VuforiaAuto2 extends LinearOpMode {
             PusherMarkerDown();
             Stop(1);
             Backward(.6);
+            closeTFOD();
         }
 
 
@@ -387,6 +392,8 @@ public class VuforiaAuto2 extends LinearOpMode {
         // Loading trackables is not necessary for the Tensor Flow Object Detection engine.
     }
 
+
+
     /**
      * Initialize the Tensor Flow Object Detection engine.
      */
@@ -396,6 +403,19 @@ public class VuforiaAuto2 extends LinearOpMode {
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
+    }
+
+    public void activateTFOD() {
+        /** Activate Tensor Flow Object Detection. */
+        if (tfod != null) {
+            tfod.activate();
+        }
+    }
+
+    public void closeTFOD() {
+        if (tfod != null) {
+            tfod.shutdown();
+        }
     }
 
     /**
@@ -408,10 +428,7 @@ public class VuforiaAuto2 extends LinearOpMode {
         boolean returnValue = false;
         runtime.reset();
 
-        /** Activate Tensor Flow Object Detection. */
-        if (tfod != null) {
-            tfod.activate();
-        }
+
 
         while (opModeIsActive() && runtime.seconds() < timeoutS) {
             telemetry.addData("TFOD", "Running scan");
@@ -424,7 +441,7 @@ public class VuforiaAuto2 extends LinearOpMode {
                 //updatedRecognitions = tfod.getUpdatedRecognitions();
                 if (updatedRecognitions != null) {
                     telemetry.addData("# Object Detected", updatedRecognitions.size());
-                    if (updatedRecognitions.size() >= 1) {
+                    if (updatedRecognitions.size() == 1) {
                         //for (Recognition recognition : updatedRecognitions) {
                         Recognition recognition = updatedRecognitions.get(0);//updatedRecognitions.size()-1);
                         String label = recognition.getLabel();
@@ -443,14 +460,37 @@ public class VuforiaAuto2 extends LinearOpMode {
                         }
                         //}
                     }
+                    else if(updatedRecognitions.size() > 1) {
+                        Recognition bottomMineral = updatedRecognitions.get(0);
+                        for (Recognition recognition: updatedRecognitions){
+                            if (recognition.getBottom() > bottomMineral.getBottom()){
+                                bottomMineral = recognition;
+                            }
+                            telemetry.addData("Distance from bottom: ", recognition.getBottom());
+                            telemetry.update();
+                        }
+
+                        String label = bottomMineral.getLabel();
+                        telemetry.addData("mineral is:",label);
+                        telemetry.update();
+                        sleep(1000);
+                        if (bottomMineral.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                            returnValue = true;
+                            return returnValue;
+                        } else if (bottomMineral.getLabel().equals(LABEL_SILVER_MINERAL)) {
+                            returnValue = false;
+                            return returnValue;
+                        } else {
+                            returnValue = false;
+                            return returnValue;
+                        }
+                    }
                     telemetry.update();
                 }
             }
         }
 
-        if (tfod != null) {
-            tfod.shutdown();
-        }
+
         return returnValue;
     }
 
